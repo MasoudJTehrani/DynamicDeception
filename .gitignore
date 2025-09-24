@@ -1,0 +1,5 @@
+__pycache__/
+wandb/
+pretrained/
+eval/
+yolov5s.pt
