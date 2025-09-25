@@ -3,26 +3,22 @@
         "no-pedestrian": {
             "sp_npcs": false,
             "sp_peds": false,
-            "pedestrian_name": "",
-            "description": "Evaluation of the no pedestrian scenario with the interfuser agent"
+            "pedestrian_name": ""
         },
         "benign": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_name": "walker.pedestrian.0001",
-            "description": "Evaluation of the benign pedestrian scenario with the interfuser agent"
+            "pedestrian_name": "walker.pedestrian.0001"
         },
         "adversarial": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_name": "walker.pedestrian.00061",
-            "description": "Evaluation of the adv pedestrian scenario with the interfuser agent"
+            "pedestrian_name": "walker.pedestrian.0061"
         },
         "camellia": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_name": "walker.pedestrian.00062",
-            "description": "Evaluation of the camellia pedestrian scenario with the interfuser agent"
+            "pedestrian_name": "walker.pedestrian.0062"
         }
     }
 }

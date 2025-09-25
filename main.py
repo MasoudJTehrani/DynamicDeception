@@ -1,5 +1,4 @@
 import carla
-import time
 import os
 import sys
 import yaml
@@ -46,17 +45,18 @@ def main():
             # The inner loop iterates through each scenario for the current agent
             for scenario_name, scenario_data in agent_scenarios.items():
                 # Extract the variables for the current scenario
-                sp_npcs, sp_peds, pedestrian_name, description = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_name", "description"))
-                print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_name, description)
+                sp_npcs, sp_peds, pedestrian_name = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_name"))
+                print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_name)
                 
                 # Spawning the pedestrian
                 bpLibrary = world.get_blueprint_library()
+                pedestrian = None
                 if sp_peds:
-                    pedestrian = spawn_pedestrian(world, bpLibrary, ped_spawn_point, 
-                                                  pedestrian_name, ped_x, ped_y, ped_z, ped_pitch, ped_yaw, ped_roll)
+                    pedestrian = spawn_pedestrian(world, bpLibrary, pedestrian_name, ped_x, ped_y, ped_z, ped_pitch, ped_yaw, ped_roll)
 
                 # Spawning the npc vehicles
                 vehicle_spawn_points = world.get_map().get_spawn_points()
+                npc_list = []
                 if sp_npcs:
                     npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, npc_spawn_points, traffic_manager)
 
@@ -75,27 +75,23 @@ def main():
                 make_route(client, start_num, end_num, vehicle_spawn_points, PCLA)
                 route = "route.xml"
                 pcla = PCLA.PCLA(agent_name, vehicle, route, client)
-        
-                while True:
+
+                # Run the vehicle until it reaches the destination
+                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0):
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()
+                
+                # Clean up the actors and PCLA instance
+                clean_up(npc_list, pedestrian, pcla)
 
     finally:
+        # Restore the original settings
         settings.synchronous_mode = False
         world.apply_settings(settings)
 
-        # Destroy vehicles, the pedestrian and PCLA
-        print('\nCleaning up the vehicles')
-        if spawn_npcs:
-            for npc in npc_list:
-                npc.destroy()
-        if spawn_pedestrian:
-            pedestrian.destroy()
-        if vehicle:
-            vehicle.destroy()
-        pcla.cleanup()
-        time.sleep(0.5)
+        # Clean up in case of an error
+        clean_up(npc_list, pedestrian, pcla)
 
 if __name__ == '__main__':
 

@@ -6,3 +6,5 @@ from .spawn_pedestrian import spawn_pedestrian
 from .make_route import make_route
 from .find_closest_spawn_point import find_closest_spawn_point
 from .print_scenario_info import print_scenario_info
+from .is_far_from import is_far_from
+from .clean_up import clean_up

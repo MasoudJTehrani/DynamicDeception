@@ -1,6 +1,6 @@
 import carla
 
-def spawn_pedestrian(world, bpLibrary, ped_spawn_point, pedestrian_name, x, y, z, pitch, yaw, roll):
+def spawn_pedestrian(world, bpLibrary, pedestrian_name, x, y, z, pitch, yaw, roll):
     """
     Spawns a pedestrian at a predefined location in the CARLA world.
     Args:
