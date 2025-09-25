@@ -3,6 +3,7 @@ import time
 import os
 import sys
 import yaml
+import json
 # import all the functions in the functions directory
 from functions import *
 
@@ -11,6 +12,7 @@ from functions import *
 sys.path.append(os.path.dirname(os.path.abspath("/home/vortex/PCLA")))
 current_dir = os.path.dirname(os.path.abspath(__file__))
 yaml_file_path = os.path.join(current_dir, 'scenarios', 'static_single_scenario.yaml')
+json_file_path = os.path.join(current_dir, 'scenarios', 'single_evaluation.json')
 
 from PCLA import PCLA
 
@@ -26,65 +28,67 @@ def main():
     for key, value in config.items():
         globals()[key] = value
 
-    ped_spawn_point = carla.Transform(
-        carla.Location(x=x, y=y, z=z),
-        carla.Rotation(pitch=pitch, yaw=yaw, roll=roll)
-    )
 
     client.load_world(town)
 
-    #pedestrian_bp = bpLibrary.filter('walker.pedestrian.0062')[0]
-    sp_npcs = False
-    sp_peds = True
-    agent = "if_if"
-
     try:
+        # Initialize the client, get the world and set the weather
         traffic_manager, world, settings, synchronous_master = start_client(client)
-        set_weather(world)
+        set_weather(world, sun_altitude_angle, sun_azimuth_angle)
         
-        # Finding actors
-        bpLibrary = world.get_blueprint_library()
-        pedestrian_bp = bpLibrary.filter('walker.pedestrian.0062')[0]
-        ## Finding vehicle
-        vehicleBP = bpLibrary.filter('model3')[0]
-        vehicle_spawn_points = world.get_map().get_spawn_points()
+        # Load the JSON data from a file
+        with open(json_file_path, 'r') as f:
+            evals = json.load(f)
 
-        # Spawning npc vehicles
+        # For each agent name (e.g., 'if_if', 'simlingo_simlingo')
+        for agent_name, agent_scenarios in evals.items():
+            
+            # The inner loop iterates through each scenario for the current agent
+            for scenario_name, scenario_data in agent_scenarios.items():
+                # Extract the variables for the current scenario
+                sp_npcs, sp_peds, pedestrian_name, description = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_name", "description"))
+                print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_name, description)
+                
+                # Spawning the pedestrian
+                bpLibrary = world.get_blueprint_library()
+                if sp_peds:
+                    pedestrian = spawn_pedestrian(world, bpLibrary, ped_spawn_point, 
+                                                  pedestrian_name, ped_x, ped_y, ped_z, ped_pitch, ped_yaw, ped_roll)
+
+                # Spawning the npc vehicles
+                vehicle_spawn_points = world.get_map().get_spawn_points()
+                if sp_npcs:
+                    npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, npc_spawn_points, traffic_manager)
+
+                # Setting up the route and spawning the ego vehicle
+                start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=start_x, y=start_y, z=start_z), vehicle_spawn_points)
+                end_loc , end_num = find_closest_spawn_point(world, carla.Location(x=end_x, y=end_y, z=end_z), vehicle_spawn_points)
+                vehicle = world.spawn_actor(bpLibrary.filter('model3')[0], start_loc) # Spawning the ego vehicle
+                world.tick()
+
+                # Set the spectator according to the vehicle's transform
+                spectator = world.get_spectator()
+                spectator.set_transform(put_spectator(vehicle.get_transform()))
+                world.tick()
+
+                # Set up PCLA
+                make_route(client, start_num, end_num, vehicle_spawn_points, PCLA)
+                route = "route.xml"
+                pcla = PCLA.PCLA(agent_name, vehicle, route, client)
         
-        vehicles_list = spawn_npcs(sp_npcs, world, bpLibrary, vehicle_spawn_points, traffic_manager)
-        
+                while True:
+                    ego_action = pcla.get_action()
+                    vehicle.apply_control(ego_action)
+                    world.tick()
 
-        # Spawn a pedestrian
-        pedestrian = spawn_pedestrian(sp_peds, world, bpLibrary)
-
-        # Setting up the route and spawning the ego vehicle
-        make_route(client, start_loc, end_loc, vehicle_spawn_points, PCLA)
-        vehicle = world.spawn_actor(vehicleBP, vehicle_spawn_points[start_loc]) # Spawning the ego vehicle
-        world.tick()
-
-        # Set up PCLA
-        route = "route.xml"
-        pcla = PCLA.PCLA(agent, vehicle, route, client)
-        
-        # Set the spectator according the vehicle's transform
-        spectator = world.get_spectator()
-        spectator.set_transform(put_spectator(vehicle.get_transform()))
-        world.tick()
-
-        print('Spawned the vehicle with model =', agent,', press Ctrl+C to exit.\n')
-        while True:
-            ego_action = pcla.get_action()
-            vehicle.apply_control(ego_action)
-            world.tick()
-    
     finally:
         settings.synchronous_mode = False
         world.apply_settings(settings)
 
-        # Destroy vehicles, pedestrian and PCLA
+        # Destroy vehicles, the pedestrian and PCLA
         print('\nCleaning up the vehicles')
         if spawn_npcs:
-            for npc in vehicles_list:
+            for npc in npc_list:
                 npc.destroy()
         if spawn_pedestrian:
             pedestrian.destroy()

@@ -4,3 +4,5 @@ from .start_client import start_client
 from .spawn_npcs import spawn_npcs
 from .spawn_pedestrian import spawn_pedestrian
 from .make_route import make_route
+from .find_closest_spawn_point import find_closest_spawn_point
+from .print_scenario_info import print_scenario_info

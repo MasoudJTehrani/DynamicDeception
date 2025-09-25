@@ -2,14 +2,20 @@
 # This sets up the scenario. then the main.py code uses the #_evaluation.json file to evaluate different setups
 
 town: "Town07"
-x: 5.5
-y: 55.5
-z: 1.5
-pitch: 0
-yaw: 180
-roll: 0
+ped_x: 5.5
+ped_y: 55.5
+ped_z: 1.5
+ped_pitch: 0
+ped_yaw: 180
+ped_roll: 0
 sun_altitude_angle: 120.0
 sun_azimuth_angle: 30.0
 npc_spawn_points: [22, 46, 45, 108, 111]
 start_loc: 10
 end_loc: 37
+start_x: 29
+start_y: 57
+start_z: 1
+end_x: -13 
+end_y: 57
+end_z: 1

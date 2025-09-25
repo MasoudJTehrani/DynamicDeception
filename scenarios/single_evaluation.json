@@ -1,27 +1,27 @@
 {
     "if_if": {
-        "no": {
+        "no-pedestrian": {
             "sp_npcs": false,
             "sp_peds": false,
-            "pedestrian_bp": "",
+            "pedestrian_name": "",
             "description": "Evaluation of the no pedestrian scenario with the interfuser agent"
         },
         "benign": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_bp": "walker.pedestrian.0001",
+            "pedestrian_name": "walker.pedestrian.0001",
             "description": "Evaluation of the benign pedestrian scenario with the interfuser agent"
         },
-        "adv": {
+        "adversarial": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_bp": "walker.pedestrian.00061",
+            "pedestrian_name": "walker.pedestrian.00061",
             "description": "Evaluation of the adv pedestrian scenario with the interfuser agent"
         },
         "camellia": {
             "sp_npcs": false,
             "sp_peds": true,
-            "pedestrian_bp": "walker.pedestrian.00062",
+            "pedestrian_name": "walker.pedestrian.00062",
             "description": "Evaluation of the camellia pedestrian scenario with the interfuser agent"
         }
     }
