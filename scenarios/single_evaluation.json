@@ -1,12 +1,17 @@
 {
     "simlingo_simlingo": {
+        "no-pedestrian": {
+            "sp_npcs": true,
+            "sp_peds": false,
+            "pedestrian_name": ""
+        },
         "benign": {
             "sp_npcs": true,
             "sp_peds": true,
             "pedestrian_name": "walker.pedestrian.0001"
         },
         "adversarial": {
-            "sp_npcs": true,
+            "sp_npcs": false,
             "sp_peds": true,
             "pedestrian_name": "walker.pedestrian.0061"
         },

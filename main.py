@@ -79,7 +79,7 @@ def main():
                 dynamic = True
                 # Run the vehicle until it reaches the destination
                 while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0):
-                    if dynamic:
+                    if dynamic and sp_peds: # Change this later
                         move_pedestrian(pedestrian, vehicle, calc_distance, ped_distance, target_ped_x, target_ped_y, target_ped_z, vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
