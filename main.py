@@ -10,7 +10,7 @@ from functions import *
 # Add the directory containing PCLA.py to the Python path
 sys.path.append(os.path.dirname(os.path.abspath("/home/vortex/PCLA")))
 current_dir = os.path.dirname(os.path.abspath(__file__))
-yaml_file_path = os.path.join(current_dir, 'scenarios', 'static_single_scenario.yaml')
+yaml_file_path = os.path.join(current_dir, 'scenarios', 'dynamic_single_scenario.yaml')
 json_file_path = os.path.join(current_dir, 'scenarios', 'single_evaluation.json')
 
 from PCLA import PCLA
@@ -76,8 +76,11 @@ def main():
                 route = "route.xml"
                 pcla = PCLA.PCLA(agent_name, vehicle, route, client)
 
+                dynamic = True
                 # Run the vehicle until it reaches the destination
                 while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0):
+                    if dynamic:
+                        move_pedestrian(pedestrian, vehicle, calc_distance, ped_distance, target_ped_x, target_ped_y, target_ped_z, vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()

@@ -1,0 +1,27 @@
+# Configuration for the CARLA simulation scenario
+# This sets up the scenario. then the main.py code uses the #_evaluation.json file to evaluate different setups
+
+town: "Town07"
+ped_x: 15.5
+ped_y: 55.5
+ped_z: 1.5
+target_ped_x: -1
+target_ped_y: 0
+target_ped_z: 0
+ped_speed: 2
+ped_distance: 10
+# This will only move it in the direction of x
+ped_pitch: 0
+ped_yaw: 180
+ped_roll: 0
+sun_altitude_angle: 120.0
+sun_azimuth_angle: 30.0
+npc_spawn_points: [22, 46, 45, 108, 111]
+start_loc: 10
+end_loc: 37
+start_x: 29
+start_y: 57
+start_z: 1
+end_x: -13 
+end_y: 57
+end_z: 1

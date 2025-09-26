@@ -8,3 +8,5 @@ from .find_closest_spawn_point import find_closest_spawn_point
 from .print_scenario_info import print_scenario_info
 from .is_far_from import is_far_from
 from .clean_up import clean_up
+from .calc_distance import calc_distance
+from .move_pedestrian import move_pedestrian
