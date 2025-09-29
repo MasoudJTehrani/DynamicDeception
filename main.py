@@ -3,6 +3,7 @@ import os
 import sys
 import yaml
 import json
+import time
 # import all the functions in the functions directory
 from functions import *
 
@@ -77,8 +78,10 @@ def main():
                 pcla = PCLA.PCLA(agent_name, vehicle, route, client)
 
                 dynamic = True
-                # Run the vehicle until it reaches the destination
-                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0):
+                begin_time = time.time()
+                time_allowed = 360
+                # Run the vehicle until it reaches the destination or a certain time is passed
+                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) and ((time.time() - begin_time) < time_allowed) :
                     if dynamic and sp_peds: # Change this later
                         move_pedestrian(pedestrian, vehicle, calc_distance, ped_distance, target_ped_x, target_ped_y, target_ped_z, vehicle.get_velocity())
                     ego_action = pcla.get_action()

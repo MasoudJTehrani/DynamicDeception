@@ -1,5 +1,15 @@
 {
     "simlingo_simlingo": {
+        "adversarial": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_name": "walker.pedestrian.0061"
+        },
+        "camellia": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_name": "walker.pedestrian.0062"
+        },
         "no-pedestrian": {
             "sp_npcs": true,
             "sp_peds": false,
@@ -9,16 +19,6 @@
             "sp_npcs": true,
             "sp_peds": true,
             "pedestrian_name": "walker.pedestrian.0001"
-        },
-        "adversarial": {
-            "sp_npcs": false,
-            "sp_peds": true,
-            "pedestrian_name": "walker.pedestrian.0061"
-        },
-        "camellia": {
-            "sp_npcs": true,
-            "sp_peds": true,
-            "pedestrian_name": "walker.pedestrian.0062"
         }
     }
 }
