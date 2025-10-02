@@ -3,3 +3,4 @@ wandb/
 pretrained/
 eval/
 yolov5s.pt
+patch_generation/datasets
