@@ -31,6 +31,7 @@ class Yolo(torch.nn.Module):
             return outputs
 
 def pytorch_yolo(model, INPUT_SHAPE):
+    # creates the detector model
     return PyTorchYolo(model=model,
                     device_type='gpu',
                     input_shape=INPUT_SHAPE,

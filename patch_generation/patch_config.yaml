@@ -18,3 +18,9 @@ DATASET_URL: "https://storage.googleapis.com/weebit-shared/dsv5.zip"
 TRAINING_DATASET_DIR: "./datasets/DSV5"
 DATASET_CUTOFF_GENERATE: 0 # cutoff for the dataset size, applied before train/test split
 DATASET_CUTOFF: 0 # cutoff for the number of images used for patch training, applied on training set
+SINGLE_DISGUISE_PATH: "./disguises/camellia.jpg"
+COLLUSION_DISGUISE_PATH: "./disguises/camellia_split.jpg"
+PRETRAINED_SINGLE_PATH: 'None' # path of the patch to start from
+PRETRAINED_COLLUSION_PATH: 'None' # path of the patch to start from
+GENERATE: True # NOTE Set to True if you want to generate a new patch, False if you just want to apply a pretrained patch
+disguise_distance_factor: 1/400000

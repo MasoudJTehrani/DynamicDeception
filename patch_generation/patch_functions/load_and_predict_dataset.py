@@ -2,6 +2,7 @@ import os
 import warnings
 import random
 import numpy as np
+import torch
 from tqdm import tqdm
 from PIL import Image
 from torchvision.transforms import transforms
@@ -21,18 +22,29 @@ def batch_predict(dirs, batch_size, transform, detector):
         all_predictions.extend(batch_dets)
     return all_predictions
 
-def load_and_filter_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATASET_CUTOFF, TRAINING_DATASET_DIR, DATASET_dir):
+def load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATASET_CUTOFF, TRAINING_DATASET_DIR, DATASET_dir):
+    """
+    Load and predict the dataset for training the adversarial patch.
     
+    Parameters:
+    - detector: The object detection model used for predicting.
+    - INPUT_SHAPE: The expected input shape for the model.
+    - DATASET_CUTOFF_GENERATE: Cutoff for the number of images used for patch generation.
+    - DATASET_CUTOFF: Cutoff for the dataset size before train/test split.
+    - TRAINING_DATASET_DIR: Directory where the training dataset is stored.
+    - DATASET_dir: URL or path to download the dataset if not present.  
+    Returns:
+    - training_images_for_generation: List of image paths used for patch generation.
+    - dets: Model predictions on the training images.
+    """
     # Download the dataset if it does not exist
     download_dataset(DATASET_dir, TRAINING_DATASET_DIR)
 
-    """
-    Ignore all future warnings
-    Reason:
-    Adversarial-Patch-ART\.venv\Lib\site-packages\yolov5\models\common.py:682: FutureWarning: 
-    `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
-    with amp.autocast(autocast):
-    """
+    # Ignore all future warnings
+    # Reason:
+    # Adversarial-Patch-ART\.venv\Lib\site-packages\yolov5\models\common.py:682: FutureWarning: 
+    # `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+    # with amp.autocast(autocast):
     warnings.simplefilter(action='ignore', category=FutureWarning)
 
     dirs = []
@@ -80,4 +92,4 @@ def load_and_filter_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATA
 
     torch.cuda.empty_cache()
 
-    return training_images_for_generation, dets
+    return training_images_for_generation, dets, validation_dirs

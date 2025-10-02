@@ -1,4 +1,6 @@
-def extract_predictions(predictions_, conf_thresh=0, n_boxes=5, classes=[], DEBUG=False):
+import torch
+import torchvision
+def extract_predictions(predictions_, OBJECT_CATEGORY_NAMES, conf_thresh=0, n_boxes=5, classes=[], DEBUG=False):
     """
     Filters the predictions obtained from a model by their confidence and classes
 

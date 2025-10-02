@@ -1,3 +1,4 @@
+import pickle
 # Function to load data
 def load_data(file_path):
     with open(file_path, 'rb') as f:
