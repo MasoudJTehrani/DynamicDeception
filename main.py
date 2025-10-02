@@ -1,9 +1,3 @@
-import carla
-import os
-import sys
-import yaml
-import json
-import time
 # import all the functions in the functions directory
 from functions import *
 
