@@ -2,6 +2,10 @@ from patch_functions import *
 
 def main(generation_mode):
     print(f"Generation mode selected: {generation_mode}")
+
+    #------------------------------------------------------------------------------------------------------
+    # Initialization and Configuration
+
     # Set Environment Variables
     os.environ["TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD"] = "1"
 
@@ -10,34 +14,43 @@ def main(generation_mode):
     yaml_file_path = os.path.join(current_dir,'patch_config.yaml')
 
     # Load patch configuration from YAML file
+    # Read the YAML configuration file for more information
     with open(yaml_file_path, 'r') as file:
         config = yaml.safe_load(file)
 
-    INPUT_SHAPE = (config['CHANNELS'], config['HEIGHT'], config['WIDTH'])
+    for key, value in config.items():
+        globals()[key] = value
 
-    # If you want the patch generation to start from pretrained patches, set GENERATE to False
-    if not config['GENERATE']:
-        SINGLE_DISGUISE_PATH = config['PRETRAINED_SINGLE_PATH']
-        COLLUSION_DISGUISE_PATH = config['PRETRAINED_COLLUSION_PATH']
-    else:
-        SINGLE_DISGUISE_PATH = config['SINGLE_DISGUISE_PATH']
-        COLLUSION_DISGUISE_PATH = config['COLLUSION_DISGUISE_PATH']
+    INPUT_SHAPE = (CHANNELS, HEIGHT, WIDTH)
+    patch_shape = (patch_channels, patch_height, patch_width)
+    
+    #------------------------------------------------------------------------------------------------------
+    # Initialize components
 
     # Check for CUDA availability
     check_cuda()
 
     # Load YOLO model
-    model = Yolo(yolov5.load(config['YOLO_MODEL']))
+    model = Yolo(yolov5.load(os.path.join(current_dir, YOLO_MODEL)))
     detector = pytorch_yolo(model, INPUT_SHAPE)
 
     # Set the seed for randomness
     set_seeds(42)
 
+    # ------------------------------------------------------------------------------------------------------
     # Load and filter dataset
-    training_images_for_generation, dets, validation_dirs = load_and_predict_dataset(detector, INPUT_SHAPE, config['DATASET_CUTOFF_GENERATE'], config['DATASET_CUTOFF'], config['TRAINING_DATASET_DIR'], config['DATASET_URL'])
+    training_images_for_generation, dets, validation_dirs, transform = load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATASET_CUTOFF, os.path.join(current_dir, TRAINING_DATASET_DIR), DATASET_URL)
 
     # Save or load the person detections to/from pickle file
-    save_load_person_detections(dets, config['OBJECT_CATEGORY_NAMES'], extract_predictions, load_data, save_data)
+    preds_orig_person = save_load_person_detections(dets, OBJECT_CATEGORY_NAMES, extract_predictions, load_data, save_data)
+    patch_locations = preds_orig_person # Using this, the patches will be applied on the pedestrians locations
+
+    # ------------------------------------------------------------------------------------------------------
+    # Patch Generation
+    torch.cuda.empty_cache()
+    patch, loss = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
+
+
 
 
 if __name__ == "__main__":

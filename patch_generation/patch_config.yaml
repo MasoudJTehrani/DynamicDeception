@@ -12,15 +12,48 @@ OBJECT_CATEGORY_NAMES: ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'b
 CHANNELS: 3
 HEIGHT: 2048
 WIDTH: 2048
-YOLO_MODEL: "./yolov5s.pt"
+YOLO_MODEL: "yolov5s.pt"
 #YOLO_MODEL = "./yolov5x.pt"
 DATASET_URL: "https://storage.googleapis.com/weebit-shared/dsv5.zip"
-TRAINING_DATASET_DIR: "./datasets/DSV5"
+TRAINING_DATASET_DIR: "datasets/DSV5"
 DATASET_CUTOFF_GENERATE: 0 # cutoff for the dataset size, applied before train/test split
 DATASET_CUTOFF: 0 # cutoff for the number of images used for patch training, applied on training set
-SINGLE_DISGUISE_PATH: "./disguises/camellia.jpg"
-COLLUSION_DISGUISE_PATH: "./disguises/camellia_split.jpg"
+
+# Patch
+SINGLE_DISGUISE_PATH: "disguises/camellia.jpg"
+COLLUSION_DISGUISE_PATH: "disguises/camellia_split.jpg"
 PRETRAINED_SINGLE_PATH: 'None' # path of the patch to start from
 PRETRAINED_COLLUSION_PATH: 'None' # path of the patch to start from
-GENERATE: True # NOTE Set to True if you want to generate a new patch, False if you just want to apply a pretrained patch
+GENERATE: True # Set to True if you want to generate a new patch, False if you just want to apply a pretrained patch
 disguise_distance_factor: 1/400000
+patch_channels: 3
+patch_height: 512
+patch_width: 512
+
+# Robustness
+rotation_max: 20
+scale_min: 0.015 # NOTE patch size = scale * image_size
+scale_max: 0.025
+distortion_scale_max: 0.4
+contrast_min: 0.3
+contrast_max: 0.5
+
+# Training
+learning_rate: 0.01
+max_epochs: 15
+max_steps: 0
+batch_size: 1
+optimizer: "Adam" # ["pgd", "Adam"]
+scheduler: "CosineAnnealingWarmRestarts" # ["CosineAnnealingWarmRestarts", "StepLR"]
+decay_rate: 1.0
+decay_step: 15 # Same as max_epochs
+
+# Collusion
+fixed_location_random_scaling: True # True means that the patch is scaled randomly but placed at on pedestrians
+fixed_gap: True # True means that the right patch is placed at a fixed distance to the left patch, False means that it is placed on the right pedestrian
+gap_size: 20 # The gap size between the two patches if generation_mod = collusion and fixed_gap = True
+
+# fixed
+targeted: True
+patch_type: "square"
+patch_location: None # TODO This does not yet work if True, the scaling fails

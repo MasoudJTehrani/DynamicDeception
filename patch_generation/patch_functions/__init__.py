@@ -8,6 +8,7 @@ from .set_seeds import set_seeds
 from .check_cuda import check_cuda
 from .load_and_predict_dataset import load_and_predict_dataset
 from .save_load_person_detections import save_load_person_detections
+from .patch_generator import patch_generator
 
 import art.attacks.evasion
 from art.attacks.evasion import AdversarialPatchPyTorch

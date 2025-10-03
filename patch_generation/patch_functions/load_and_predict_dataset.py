@@ -92,4 +92,4 @@ def load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DAT
 
     torch.cuda.empty_cache()
 
-    return training_images_for_generation, dets, validation_dirs
+    return training_images_for_generation, dets, validation_dirs, transform

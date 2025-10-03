@@ -1,3 +1,5 @@
+import os
+import cv2
 def plot_image_with_boxes(img, boxes, pred_cls, title, scores, color=(0,255,0), colordict={}, target_boxes=None):
     """
     Visualizes an image with the detected object boxes
@@ -28,7 +30,8 @@ def plot_image_with_boxes(img, boxes, pred_cls, title, scores, color=(0,255,0), 
 
 
     # Ensure "plots" folder exists
-    plots_dir = "plots"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    plots_dir = os.path.join(current_dir, 'plots')
     if not os.path.exists(plots_dir):
         os.makedirs(plots_dir)
 
