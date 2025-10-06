@@ -4,8 +4,7 @@ import yaml
 import yolov5
 from PIL import Image
 from art.attacks.evasion import AdversarialPatchPyTorch
-from .yolo_class import Yolo
-from art.estimators.object_detection.pytorch_yolo import PyTorchYolo
+from .yolo_class import Yolo, pytorch_yolo
 
 def patch_generator(detector, generation_mode, training_images_for_generation, 
                     patch_locations, transform, yaml_file_path, current_dir):
@@ -34,11 +33,10 @@ def patch_generator(detector, generation_mode, training_images_for_generation,
 
     # This is the target detection, e.g. what we want the detections by the model to look like. Mostly a class with score 1 at the patch location
     # NOTE: Currently, this will get overwritten in the generation as we place the patches on the pedestrians, except for the target class (label)
-    label_idx = config['OBJECT_CATEGORY_NAMES'].index("stop sign")
     synthetic_y = {
         'boxes': np.array([[0,0,0,0]], dtype=np.float32), # TODO the box would be based on patch_location and patch_shape
-        'scores': np.array([1], dtype=np.float32),
-        'labels': np.array([label_idx], dtype=np.int64)
+        'scores': np.array([    1], dtype=np.float32),
+        'labels': np.array([config['OBJECT_CATEGORY_NAMES'].index("stop sign")])
     }
 
     pretrained_patch = None
@@ -78,16 +76,8 @@ def patch_generator(detector, generation_mode, training_images_for_generation,
 
     # This is a temporary workaround for https://github.com/Trusted-AI/adversarial-robustness-toolbox/issues/2601
     def create_detector_model():
-        model2 = yolov5.load(os.path.join(current_dir, config['YOLO_MODEL']))
-        model2 = Yolo(model2)
-        detector2 = PyTorchYolo(model=model2,
-                        device_type='gpu',
-                        input_shape=INPUT_SHAPE,
-                        clip_values=(0, 255),
-                        attack_losses=("loss_total", "loss_cls",
-                                        "loss_box",
-                                        "loss_obj"))
-        return detector2
+        model = Yolo(yolov5.load(os.path.join(current_dir, config['YOLO_MODEL'])))
+        return pytorch_yolo(model, INPUT_SHAPE)
 
     if config['GENERATE']:
         patch, patch_mask, loss = ap.generate(
@@ -112,4 +102,4 @@ def patch_generator(detector, generation_mode, training_images_for_generation,
             patch = np.array(Image.open(os.path.join(current_dir, config['PRETRAINED_COLLUSION_PATH'])))
         patch = patch.transpose(2,0,1)
 
-    return patch, loss
+    return patch, loss, ap

@@ -9,6 +9,7 @@ from .check_cuda import check_cuda
 from .load_and_predict_dataset import load_and_predict_dataset
 from .save_load_person_detections import save_load_person_detections
 from .patch_generator import patch_generator
+from .analyze_loss import analyze_loss
 
 import art.attacks.evasion
 from art.attacks.evasion import AdversarialPatchPyTorch
@@ -23,14 +24,9 @@ import yolov5
 import pickle
 import zipfile
 import argparse
-import matplotlib
 import torchvision
 from PIL import Image
 import torch.nn as nn
 from io import BytesIO
 import torch.optim as optim
-import matplotlib.pyplot as plt
 import torch.nn.functional as F
-
-plt.style.use('ggplot')
-matplotlib.use('Agg')  # Use the 'Agg' backend for headless mode
