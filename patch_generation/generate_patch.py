@@ -40,16 +40,15 @@ def main(generation_mode):
 
     # ------------------------------------------------------------------------------------------------------
     # Load and filter dataset
-    training_images_for_generation, dets, validation_dirs, transform = load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATASET_CUTOFF, os.path.join(current_dir, TRAINING_DATASET_DIR), DATASET_URL)
+    training_images_for_generation, dets, validation_dirs, transform, dirs = load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DATASET_CUTOFF, os.path.join(current_dir, TRAINING_DATASET_DIR), DATASET_URL)
 
     # Save or load the person detections to/from pickle file
-    preds_orig_person = save_load_person_detections(dets, OBJECT_CATEGORY_NAMES, extract_predictions, load_data, save_data)
-    patch_locations = preds_orig_person # Using this, the patches will be applied on the pedestrians locations
+    #spreds_orig_person = save_load_person_detections(dets, OBJECT_CATEGORY_NAMES, extract_predictions, load_data, save_data)
+    #patch_locations = preds_orig_person # Using this, the patches will be applied on the pedestrians locations
 
     # ------------------------------------------------------------------------------------------------------
     # Patch Generation
     torch.cuda.empty_cache()
-    # Generate patch and related information
     #patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
 
     # Save patch, loss, and ap to a file using pickle
@@ -63,8 +62,21 @@ def main(generation_mode):
     patch = data["patch"]
     loss = data["loss"]
     ap = data["ap"]
+
+    # ------------------------------------------------------------------------------------------------------
     # Loss analysis
+    analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, current_dir)
     
+    # ------------------------------------------------------------------------------------------------------
+    # Save the generated patch
+    Image.fromarray(patch.transpose(1,2,0).astype(np.uint8)).save(os.path.join(current_dir, "plots/patches/patch.png"))
+    print(f"\nThe patch is saved in: \n{os.path.join(current_dir, 'plots/patches/')}")
+
+    # ------------------------------------------------------------------------------------------------------
+    # Patch validation
+    torch.cuda.empty_cache()
+    set_seeds(42)
+    validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_mode, patch, ap, current_dir, transform)
 
 
 

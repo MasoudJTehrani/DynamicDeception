@@ -1,11 +1,13 @@
 import os
 import requests
+import zipfile
+from tqdm import tqdm
 
 def download_dataset(zip_url, folder_path):
     """
     Here, we download the Patch Dataset from remote if it does not already exist on disk, as specified by TRAINING_DATASET_DIR.
     """
-
+    print("\nDownloading Dataset if not exist")
     # Check if folder exists
     if not os.path.exists(folder_path):
         print(f"{folder_path} does not exist. Downloading ZIP from {zip_url}...")
@@ -35,4 +37,4 @@ def download_dataset(zip_url, folder_path):
         os.remove(temp_zip_path)
         print(f"Content extracted to {folder_path}.")
     else:
-        print(f"{folder_path} already exists. No need to download.")
+        print(f"Dataset already exists in the given directory")

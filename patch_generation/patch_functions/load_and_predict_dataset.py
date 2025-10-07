@@ -65,8 +65,6 @@ def load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DAT
     padding_bottom = INPUT_SHAPE[1] - train_img_height - padding_top
 
     transform = transforms.Compose([
-            #transforms.Resize(INPUT_SHAPE[1], interpolation=transforms.InterpolationMode.BICUBIC),
-            #transforms.CenterCrop(INPUT_SHAPE[1]),
             transforms.Pad((0, padding_top, 0, padding_bottom)),
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x[:3])  # Keep only the first 3 channels (RGB)
@@ -92,4 +90,4 @@ def load_and_predict_dataset(detector, INPUT_SHAPE, DATASET_CUTOFF_GENERATE, DAT
 
     torch.cuda.empty_cache()
 
-    return training_images_for_generation, dets, validation_dirs, transform
+    return training_images_for_generation, dets, validation_dirs, transform, dirs

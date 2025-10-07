@@ -17,21 +17,19 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
     plt.xlabel("Training Epochs")
     plt.ylabel("Loss (box + class + score)")
     plt.title(f"Loss during Training with LR {learning_rate}")
-    plt.show()
+    plt.savefig(os.path.join(current_dir, 'plots/loss/loss_per_epoch.png'), dpi=300, bbox_inches='tight')
+    plt.clf()
 
+    # Loss per batch with moving average
     flat_loss = [batch_loss for epoch in loss for batch_loss in epoch] # flatten the loss history (it contains loss per patch in a list per epoch)
     flat_loss = np.array(flat_loss) * (-1 if optimizer=="pgd" else 1)
 
     # Define the size of the sliding window
     k = 10
-
     # Calculate the moving average
     moving_averages = np.convolve(flat_loss, np.ones(k)/k, mode='valid')
-
     # Indices for the moving average to align with the input list
     average_indices = range(k - 1, len(flat_loss))
-
-    # Loss per batch
 
     try:
         plt.plot(flat_loss, linewidth=0.5, color=("red"), label="Loss per batch")
@@ -42,7 +40,9 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
         plt.ylabel("Loss (box + class + score + disguise)")
         plt.legend()
         plt.title(f"Loss per batch during training with LR {learning_rate}")
-        plt.show()
+        plt.savefig(os.path.join(current_dir, 'plots/loss/loss_per_batch.png'), dpi=300, bbox_inches='tight')
+        plt.clf()
+
     except Exception as e:
         print("failed to plot avg:", e)
 
@@ -68,10 +68,10 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.legend()
         plt.tight_layout()
-
-        plt.show()
-
-        # If you want to save the figure
         plt.savefig(os.path.join(current_dir, 'plots/loss/loss_history.png'), dpi=300, bbox_inches='tight')
+        plt.clf()
+
     except Exception as e:
         print(e)
+    
+    print(f"\nLoss plots are saved in: \n{os.path.join(current_dir, 'plots/loss/')}")

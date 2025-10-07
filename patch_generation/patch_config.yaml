@@ -57,3 +57,22 @@ gap_size: 20 # The gap size between the two patches if generation_mod = collusio
 targeted: True
 patch_type: "square"
 patch_location: None # TODO This does not yet work if True, the scaling fails
+
+# Validation parameters
+
+classes: ["stop sign", "banana", "person", "car", "truck", "traffic light"] # the classes we want to have shown in the plots
+n_boxes: 60 # max number of boxes to plot
+colordict: # color of the class visualizations
+  "stop sign": [255, 0, 0]
+  "banana": [0, 0, 255]
+  "car": [200, 0, 200]
+  "person": [0, 200, 200]
+
+plot_threshold: 0.2 # min confidence to be plotted
+SCALE: None # random sampling. Change it to a random string to take the middle of the scale range: scale_max - (scale_max - scale_min)/2
+SKIP: 0 # skips the X first images
+TRY_HALF_PATCH: True # whether to test only the left and right patches of collusions as well, False = only the combined patches are tested
+PLOT_N_SAMPLES: 50
+SAVE_IMAGES: True # if true, save all validation images
+ONLY_OVERLAPPING: False # set true to only see detections that overlap the patch location, e.g. are counted for
+success_threshold: 0.5 # Threshold to consider an attack as a successful attack

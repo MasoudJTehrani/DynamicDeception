@@ -10,6 +10,7 @@ from .load_and_predict_dataset import load_and_predict_dataset
 from .save_load_person_detections import save_load_person_detections
 from .patch_generator import patch_generator
 from .analyze_loss import analyze_loss
+from .validate_patch import validate_patch
 
 import art.attacks.evasion
 from art.attacks.evasion import AdversarialPatchPyTorch
@@ -25,6 +26,7 @@ import pickle
 import zipfile
 import argparse
 import torchvision
+import numpy as np
 from PIL import Image
 import torch.nn as nn
 from io import BytesIO

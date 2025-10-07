@@ -1,6 +1,6 @@
 import os
 import cv2
-def plot_image_with_boxes(img, boxes, pred_cls, title, scores, color=(0,255,0), colordict={}, target_boxes=None):
+def plot_image_with_boxes(index, img, boxes, pred_cls, title, scores, current_dir, color=(0,255,0), colordict={}, target_boxes=None):
     """
     Visualizes an image with the detected object boxes
 
@@ -29,12 +29,10 @@ def plot_image_with_boxes(img, boxes, pred_cls, title, scores, color=(0,255,0), 
                     colordict.get(pred_cls[i], color), thickness=text_th)
 
 
-    # Ensure "plots" folder exists
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    plots_dir = os.path.join(current_dir, 'plots')
-    if not os.path.exists(plots_dir):
-        os.makedirs(plots_dir)
-
-    # Save the image to the "plots" folder
-    save_path = os.path.join(plots_dir, f"{title}.png")
-    cv2.imwrite(save_path, img)
+    # Convert image from BGR to RGB before saving for better coloring
+    img_to_save = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    dir_name = title.replace(" ", "_")
+    plots_dir = os.path.join(current_dir, "plots", "validation", dir_name)
+    os.makedirs(plots_dir, exist_ok=True)
+    save_path = os.path.join(plots_dir, f"{index}.png")
+    cv2.imwrite(save_path, img_to_save)
