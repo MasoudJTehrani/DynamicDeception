@@ -50,19 +50,19 @@ def main(generation_mode):
     # Patch Generation
     torch.cuda.empty_cache()
     # Generate patch and related information
-    patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
+    #patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
 
     # Save patch, loss, and ap to a file using pickle
     save_path = os.path.join(current_dir, "patch_results.pkl")
-    with open(save_path, "wb") as f:
-        pickle.dump({"patch": patch, "loss": loss, "ap": ap}, f)
+    #with open(save_path, "wb") as f:
+        #pickle.dump({"patch": patch, "loss": loss, "ap": ap}, f)
 
     # To load later:
-    # with open(save_path, "rb") as f:
-    #     data = pickle.load(f)
-    # patch = data["patch"]
-    # loss = data["loss"]
-    # ap = data["ap"]
+    with open(save_path, "rb") as f:
+        data = pickle.load(f)
+    patch = data["patch"]
+    loss = data["loss"]
+    ap = data["ap"]
     # Loss analysis
     
 
