@@ -50,6 +50,6 @@ def print_save_results(successful_attacks, number_of_attacks, all_stop_sign_scor
     try:
         with open(results_path, 'w') as f:
             f.write("\n".join(lines) + "\n")
-        print(f"Validation results saved to {results_path}")
+        print(f"Validation results saved to: \n{results_path}")
     except Exception as e:
-        print(f"Failed to save validation results to {results_path}: {e}")
+        print(f"Failed to save validation results to: \n{results_path}: {e}")

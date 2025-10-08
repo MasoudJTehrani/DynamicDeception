@@ -1,0 +1,6 @@
+Validation Results (Using Disguise):
+Validation Results (Single Patch Mode):
+Total Attacks: 304
+Successful Attacks: 5
+Success Rate: 1.64%
+Average Stop Sign Score (Patched): 0.6046
