@@ -46,7 +46,11 @@ def print_save_results(successful_attacks, number_of_attacks, all_stop_sign_scor
 
     # Ensure current_dir exists and save results to file
     os.makedirs(current_dir, exist_ok=True)
-    results_path = os.path.join(current_dir, f"validation_results_{generation_mode}.txt")
+    if use_patch:
+        results_path = os.path.join(current_dir, f"validation_results_{generation_mode}_patch.txt")
+    else:
+        results_path = os.path.join(current_dir, f"validation_results_{generation_mode}_disguise.txt")
+        
     try:
         with open(results_path, 'w') as f:
             f.write("\n".join(lines) + "\n")
