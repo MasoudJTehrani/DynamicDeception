@@ -2,6 +2,7 @@ from .validation_functions import *
 from .extract_predictions import extract_predictions
 from .plot_image_with_boxes import plot_image_with_boxes
 from .set_seeds import set_seeds
+from .print_save_results import print_save_results
 import torch
 import yaml
 import random
@@ -116,28 +117,8 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
 
     print(f'Images are saved to \n{os.path.join(current_dir, "plots", "validation")}')
 
-    if use_patch:
-        print("\nValidation Results (Using Patch):")
-    else:
-        print("\nValidation Results (Using Disguise):")
-        
-    if generation_mode == "collusion" and config['TRY_HALF_PATCH']:
-        print(f"Validation Results (Collusion Mode with Half Patch):")
-        print(f"Total Attacks: {number_of_attacks}")
-        print(f"Successful Attacks (Both Halves): {successful_attacks}")
-        print(f"Successful Attacks (Left Half): {successful_attacks_l}")
-        print(f"Successful Attacks (Right Half): {successful_attacks_r}")
-        print(f"Success Rate (Both Halves): {successful_attacks / number_of_attacks:.2%}")
-        print(f"Success Rate (Left Half): {successful_attacks_l / number_of_attacks:.2%}")
-        print(f"Success Rate (Right Half): {successful_attacks_r / number_of_attacks:.2%}")
-    else:
-        print(f"Validation Results (Single Patch Mode):")
-        print(f"Total Attacks: {number_of_attacks}")
-        print(f"Successful Attacks: {successful_attacks}")
-        print(f"Success Rate: {successful_attacks / number_of_attacks:.2%}")
-
-    if all_stop_sign_scores_patch:
-        avg_score = sum(all_stop_sign_scores_patch) / len(all_stop_sign_scores_patch)
-        print(f"Average Stop Sign Score (Patched): {avg_score:.4f}")
+    # Prepare results text and print to console
+    print_save_results(successful_attacks, number_of_attacks, all_stop_sign_scores_patch,
+                       current_dir, generation_mode, config, successful_attacks_l, successful_attacks_r, use_patch)
 
     return all_stop_sign_scores_patch, number_of_attacks
