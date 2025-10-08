@@ -43,7 +43,7 @@ def main(generation_mode):
     torch.cuda.empty_cache()
     patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
 
-    # Save or load patch, loss, and ap to a file using pickle
+    # Save or load patch, loss, and ap to a file using pickle. This file is not pushed in git.
     save_patch(patch, loss, ap, os.path.join(current_dir, "patch_results.pkl"))
     #patch, loss, ap = load_patch(os.path.join(current_dir, "patch_results.pkl"))
 
