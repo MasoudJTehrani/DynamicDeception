@@ -70,8 +70,8 @@ def main(generation_mode):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Patch generation script. Use --mode to select generation mode ('single', 'collusion').")
-    parser.add_argument('--mode', type=str, default='single', help="Generation mode: 'single' (default) or other supported modes.")
+    parser = argparse.ArgumentParser(description="Patch generation script. Use -mode to select generation mode ('single', 'collusion').")
+    parser.add_argument('-mode', type=str, default='single', help="Generation mode: 'single' (default) or other supported modes.")
     args = parser.parse_args()
     
     if args.mode not in ['single', 'collusion']:
