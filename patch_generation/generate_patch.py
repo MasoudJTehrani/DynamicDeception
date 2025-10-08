@@ -1,8 +1,8 @@
 from patch_functions import *
 
-def main(generation_mode, load_patch):
+def main(generation_mode, load):
     print(f"Generation mode selected: {generation_mode}")
-    print(f"Load patch from file: {load_patch}")
+    print(f"Load patch from file: {load}")
 
     #------------------------------------------------------------------------------------------------------
     # Initialization and Configuration
@@ -42,7 +42,7 @@ def main(generation_mode, load_patch):
     # Patch Generation
     # Save or load patch, loss, and ap to a file using pickle. This file is not pushed to git.
     # If you want to generate a new patch, set load_patch to false.
-    if not load_patch:
+    if not load:
         patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
         save_patch(patch, loss, ap, os.path.join(current_dir, f"patch_results_{generation_mode}.pkl"))
     else:

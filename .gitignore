@@ -5,4 +5,5 @@ eval/
 yolov5s.pt
 patch_generation/datasets
 patch_generation/plots/validation/
-patch_generation/patch_results.pkl
+patch_generation/patch_results_collusion.pkl
+patch_generation/patch_results_single.pkl

@@ -66,7 +66,7 @@ def visualize_validation(red_points, blue_points, K, current_dir, generation_mod
         plt.tight_layout()
         
         # Save the plot as a PNG file to plots/validation directory
-        output_dir = os.path.join(current_dir, "plots", "validation")
+        output_dir = os.path.join(current_dir, "plots")
         save_dir = os.path.join(output_dir, f"ccdf_{generation_mode}.png")
         plt.savefig(save_dir, dpi=300, bbox_inches='tight')
         print(f'CCDF plot saved to: \n{save_dir}')
