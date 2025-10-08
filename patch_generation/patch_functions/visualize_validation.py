@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 
-def visualize_validation(red_points, blue_points, K, current_dir):
+def visualize_validation(red_points, blue_points, K, current_dir, generation_mode):
         #matplotlib.use('Agg')  # Use the 'Agg' backend for headless mode
         
         plt.rcParams.update({
@@ -65,10 +65,8 @@ def visualize_validation(red_points, blue_points, K, current_dir):
         
         plt.tight_layout()
         
-        plt.savefig('./CCDF/ccdf.pdf', format='pdf', dpi=300, bbox_inches='tight')
-        plt.show()
-        
         # Save the plot as a PNG file to plots/validation directory
         output_dir = os.path.join(current_dir, "plots", "validation")
-        plt.savefig(os.path.join(output_dir, 'ccdf.png'), dpi=300, bbox_inches='tight')
-        print(f"CCDF plot saved to: \n{os.path.join(output_dir, 'ccdf.png')}")
+        save_dir = os.path.join(output_dir, f"ccdf_{generation_mode}.png")
+        plt.savefig(save_dir, dpi=300, bbox_inches='tight')
+        print(f'CCDF plot saved to: \n{save_dir}')

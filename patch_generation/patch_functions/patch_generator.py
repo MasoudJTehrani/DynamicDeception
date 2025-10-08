@@ -3,12 +3,14 @@ import os
 import yaml
 import yolov5
 from PIL import Image
+import torch
 from art.attacks.evasion import AdversarialPatchPyTorch
 from .yolo_class import Yolo, pytorch_yolo
 
 def patch_generator(detector, generation_mode, training_images_for_generation, 
                     patch_locations, transform, yaml_file_path, current_dir):
     
+    torch.cuda.empty_cache()
     # Load patch configuration from YAML file
     with open(yaml_file_path, 'r') as file:
         config = yaml.safe_load(file)

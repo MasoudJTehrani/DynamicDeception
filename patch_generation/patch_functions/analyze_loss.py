@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib
 import os
 
-def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, current_dir):
+def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, current_dir, generation_mode):
     plt.style.use('ggplot')
 
     loss_history = []
@@ -16,7 +16,7 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
     plt.xlabel("Training Epochs")
     plt.ylabel("Loss (box + class + score)")
     plt.title(f"Loss during Training with LR {learning_rate}")
-    plt.savefig(os.path.join(current_dir, 'plots/loss/loss_per_epoch.png'), dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join(current_dir, f"plots/loss/loss_per_epoch_{generation_mode}.png"), dpi=300, bbox_inches='tight')
     plt.clf()
 
     # Loss per batch with moving average
@@ -39,7 +39,7 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
         plt.ylabel("Loss (box + class + score + disguise)")
         plt.legend()
         plt.title(f"Loss per batch during training with LR {learning_rate}")
-        plt.savefig(os.path.join(current_dir, 'plots/loss/loss_per_batch.png'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(current_dir, f"plots/loss/loss_per_batch_{generation_mode}.png"), dpi=300, bbox_inches='tight')
         plt.clf()
 
     except Exception as e:
@@ -67,7 +67,7 @@ def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, c
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.legend()
         plt.tight_layout()
-        plt.savefig(os.path.join(current_dir, 'plots/loss/loss_history.png'), dpi=300, bbox_inches='tight')
+        plt.savefig(os.path.join(current_dir, f"plots/loss/loss_history_{generation_mode}.png"), dpi=300, bbox_inches='tight')
         plt.clf()
 
     except Exception as e:

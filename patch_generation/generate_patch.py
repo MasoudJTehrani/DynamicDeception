@@ -1,7 +1,8 @@
 from patch_functions import *
 
-def main(generation_mode):
+def main(generation_mode, load_patch):
     print(f"Generation mode selected: {generation_mode}")
+    print(f"Load patch from file: {load_patch}")
 
     #------------------------------------------------------------------------------------------------------
     # Initialization and Configuration
@@ -39,20 +40,21 @@ def main(generation_mode):
 
     # ------------------------------------------------------------------------------------------------------
     # Patch Generation
-    torch.cuda.empty_cache()
-    patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
-
-    # Save or load patch, loss, and ap to a file using pickle. This file is not pushed in git.
-    save_patch(patch, loss, ap, os.path.join(current_dir, "patch_results.pkl"))
-    #patch, loss, ap = load_patch(os.path.join(current_dir, "patch_results.pkl"))
+    # Save or load patch, loss, and ap to a file using pickle. This file is not pushed to git.
+    # If you want to generate a new patch, set load_patch to false.
+    if not load_patch:
+        patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
+        save_patch(patch, loss, ap, os.path.join(current_dir, f"patch_results_{generation_mode}.pkl"))
+    else:
+        patch, loss, ap = load_patch(os.path.join(current_dir, f"patch_results_{generation_mode}.pkl"))
 
     # ------------------------------------------------------------------------------------------------------
     # Loss analysis
-    analyze_loss(loss, config['optimizer'], config['learning_rate'], config['disguise_distance_factor'], ap, current_dir)
+    analyze_loss(loss, config['optimizer'], config['learning_rate'], config['disguise_distance_factor'], ap, current_dir, generation_mode)
     
     # ------------------------------------------------------------------------------------------------------
     # Save the generated patch image
-    Image.fromarray(patch.transpose(1,2,0).astype(np.uint8)).save(os.path.join(current_dir, "plots/patches/patch.png"))
+    Image.fromarray(patch.transpose(1,2,0).astype(np.uint8)).save(os.path.join(current_dir, f"plots/patches/patch_{generation_mode}.png"))
     print(f"\nThe patch is saved in: \n{os.path.join(current_dir, 'plots/patches/')}")
 
     # ------------------------------------------------------------------------------------------------------
@@ -65,16 +67,19 @@ def main(generation_mode):
 
     # ------------------------------------------------------------------------------------------------------
     # Visualize the validation
-    visualize_validation(all_stop_sign_scores_patch, all_stop_sign_scores_disguise, K=number_of_attacks, current_dir=current_dir)
+    visualize_validation(all_stop_sign_scores_patch, all_stop_sign_scores_disguise, number_of_attacks, current_dir, generation_mode)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Patch generation script. Use -mode to select generation mode ('single', 'collusion').")
+    parser = argparse.ArgumentParser(description="Patch generation script. Use -mode to select generation mode ('single', 'collusion'). Use -load to load a patch from the pkl file instead of generating one ('true' or 'false').")
     parser.add_argument('-mode', type=str, default='single', help="Generation mode: 'single' (default) or other supported modes.")
+    parser.add_argument('-load', type=str, choices=['true', 'false'], default='false', help="If 'true', load patch from pkl instead of generating it.")
     args = parser.parse_args()
     
     if args.mode not in ['single', 'collusion']:
         raise ValueError("Invalid mode. Please choose 'single' or 'collusion'.")
     
-    # Call the main function with the parsed arguments
-    main(args.mode)
+    if args.load not in ['true', 'false']:
+        raise ValueError("Invalid load option. Please choose 'true' or 'false' (case sensitive).")
+    
+    main(args.mode, args.load)
