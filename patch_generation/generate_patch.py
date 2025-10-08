@@ -72,14 +72,9 @@ def main(generation_mode, load_patch):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Patch generation script. Use -mode to select generation mode ('single', 'collusion'). Use -load to load a patch from the pkl file instead of generating one ('true' or 'false').")
-    parser.add_argument('-mode', type=str, default='single', help="Generation mode: 'single' (default) or other supported modes.")
+    parser.add_argument('-mode', type=str, choices=['single', 'collusion'], default='single', help="Generation mode: 'single' (default) or other supported modes.")
     parser.add_argument('-load', type=str, choices=['true', 'false'], default='false', help="If 'true', load patch from pkl instead of generating it.")
     args = parser.parse_args()
     
-    if args.mode not in ['single', 'collusion']:
-        raise ValueError("Invalid mode. Please choose 'single' or 'collusion'.")
-    
-    if args.load not in ['true', 'false']:
-        raise ValueError("Invalid load option. Please choose 'true' or 'false' (case sensitive).")
-    
+    args.load = True if args.load == 'true' else False
     main(args.mode, args.load)
