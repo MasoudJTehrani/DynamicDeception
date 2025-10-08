@@ -1,5 +1,4 @@
 from patch_functions import *
-import pickle
 
 def main(generation_mode):
     print(f"Generation mode selected: {generation_mode}")
