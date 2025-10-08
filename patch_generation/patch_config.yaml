@@ -59,7 +59,6 @@ patch_type: "square"
 patch_location: None # TODO This does not yet work if True, the scaling fails
 
 # Validation parameters
-
 classes: ["stop sign", "banana", "person", "car", "truck", "traffic light"] # the classes we want to have shown in the plots
 n_boxes: 60 # max number of boxes to plot
 colordict: # color of the class visualizations

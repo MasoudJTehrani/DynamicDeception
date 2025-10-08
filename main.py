@@ -18,17 +18,14 @@ def main():
     # Load scenario configuration from YAML file
     with open(yaml_file_path, 'r') as file:
         config = yaml.safe_load(file)
-    
-    for key, value in config.items():
-        globals()[key] = value
 
 
-    client.load_world(town)
+    client.load_world(config['town'])
 
     try:
         # Initialize the client, get the world and set the weather
         traffic_manager, world, settings, synchronous_master = start_client(client)
-        set_weather(world, sun_altitude_angle, sun_azimuth_angle)
+        set_weather(world, config['sun_altitude_angle'], config['sun_azimuth_angle'])
         
         # Load the JSON data from a file
         with open(json_file_path, 'r') as f:
@@ -47,17 +44,17 @@ def main():
                 bpLibrary = world.get_blueprint_library()
                 pedestrian = None
                 if sp_peds:
-                    pedestrian = spawn_pedestrian(world, bpLibrary, pedestrian_name, ped_x, ped_y, ped_z, ped_pitch, ped_yaw, ped_roll)
+                    pedestrian = spawn_pedestrian(world, bpLibrary, pedestrian_name, config['ped_x'], config['ped_y'], config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'])
 
                 # Spawning the npc vehicles
                 vehicle_spawn_points = world.get_map().get_spawn_points()
                 npc_list = []
                 if sp_npcs:
-                    npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, npc_spawn_points, traffic_manager)
+                    npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, config['npc_spawn_points'], traffic_manager)
 
                 # Setting up the route and spawning the ego vehicle
-                start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=start_x, y=start_y, z=start_z), vehicle_spawn_points)
-                end_loc , end_num = find_closest_spawn_point(world, carla.Location(x=end_x, y=end_y, z=end_z), vehicle_spawn_points)
+                start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=config['start_x'], y=config['start_y'], z=config['start_z']), vehicle_spawn_points)
+                end_loc , end_num = find_closest_spawn_point(world, carla.Location(x=config['end_x'], y=config['end_y'], z=config['end_z']), vehicle_spawn_points)
                 vehicle = world.spawn_actor(bpLibrary.filter('model3')[0], start_loc) # Spawning the ego vehicle
                 world.tick()
 
@@ -77,7 +74,7 @@ def main():
                 # Run the vehicle until it reaches the destination or a certain time is passed
                 while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) and ((time.time() - begin_time) < time_allowed) :
                     if dynamic and sp_peds: # Change this later
-                        move_pedestrian(pedestrian, vehicle, calc_distance, ped_distance, target_ped_x, target_ped_y, target_ped_z, vehicle.get_velocity())
+                        move_pedestrian(pedestrian, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()
