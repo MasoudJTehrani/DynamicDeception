@@ -4,4 +4,5 @@ pretrained/
 eval/
 yolov5s.pt
 patch_generation/datasets
-patch_generation/plots/validation
+patch_generation/plots/validation/
+patch_generation/patch_results.pkl

@@ -1,16 +1,30 @@
 from .validation_functions import *
 from .extract_predictions import extract_predictions
 from .plot_image_with_boxes import plot_image_with_boxes
+from .set_seeds import set_seeds
+import torch
 import yaml
 import random
 import os
 
-def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_mode, patch, ap, current_dir, transform):
+def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_mode, patch, ap, current_dir, transform, use_patch= True):
+    
+    torch.cuda.empty_cache()
+    set_seeds(42)
     detector.model.eval()
 
     # Load patch configuration from YAML file
     with open(yaml_file_path, 'r') as file:
         config = yaml.safe_load(file)
+
+    # Validate the disguise instead of the patch if use_patch is False
+    if not use_patch:
+        print("\nValidating the disguise image instead of the patch.")
+        if generation_mode == "single":
+            patch=np.array(Image.open(config['SINGLE_DISGUISE_PATH'])) # load external patch
+        else:
+            patch=np.array(Image.open(config['COLLUSION_DISGUISE_PATH'])) # load external patch
+        patch = patch.transpose(2,0,1) # This will make the AdversarialPatch use the disguise image
     
     # Turning config['colordict'] values from lists to tuples, {'stop sign': (255, 0, 0), 'banana': (0, 0, 255), ...}
     if 'colordict' in config and config['colordict'] is not None:
@@ -88,11 +102,13 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
             if preds_stop_sign[0]:
                 successful_attacks += 1
 
-            if config['SAVE_IMAGES'] or j in show_indices:
+            # Remove "and use_patch" to also save the validation images for the disguise. You also need to change the title
+            if (config['SAVE_IMAGES'] or j in show_indices) and use_patch:
                 plot_image_with_boxes(index = number_of_attacks, img=patched_images[i].transpose(1,2,0).copy(), boxes=preds[1], pred_cls=preds[0], target_boxes=target_boxes[i],
                                     title=f"Predictions on image with both halves patch", scores=preds[2], colordict=config['colordict'], current_dir=current_dir)
 
-            if generation_mode == 'collusion' and config['TRY_HALF_PATCH'] and (config['SAVE_IMAGES'] or j in show_indices):
+            # Remove "and use_patch" to also save the validation images for the disguise. You also need to change the title
+            if generation_mode == 'collusion' and config['TRY_HALF_PATCH'] and (config['SAVE_IMAGES'] or j in show_indices) and use_patch:
                 plot_image_with_boxes(index = number_of_attacks, img=patched_images_l[i].transpose(1,2,0).copy(), boxes=preds_l[1], pred_cls=preds_l[0], target_boxes=target_boxes_l[i],
                                         title="Predictions on image with left half of patch", scores=preds_l[2], colordict=config['colordict'], current_dir=current_dir)
                 plot_image_with_boxes(index = number_of_attacks, img=patched_images_r[i].transpose(1,2,0).copy(), boxes=preds_r[1], pred_cls=preds_r[0], target_boxes=target_boxes_r[i],
@@ -100,8 +116,13 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
 
     print(f'Images are saved to \n{os.path.join(current_dir, "plots", "validation")}')
 
+    if use_patch:
+        print("\nValidation Results (Using Patch):")
+    else:
+        print("\nValidation Results (Using Disguise):")
+        
     if generation_mode == "collusion" and config['TRY_HALF_PATCH']:
-        print(f"\nValidation Results (Collusion Mode with Half Patch):")
+        print(f"Validation Results (Collusion Mode with Half Patch):")
         print(f"Total Attacks: {number_of_attacks}")
         print(f"Successful Attacks (Both Halves): {successful_attacks}")
         print(f"Successful Attacks (Left Half): {successful_attacks_l}")
@@ -110,7 +131,7 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
         print(f"Success Rate (Left Half): {successful_attacks_l / number_of_attacks:.2%}")
         print(f"Success Rate (Right Half): {successful_attacks_r / number_of_attacks:.2%}")
     else:
-        print(f"\nValidation Results (Single Patch Mode):")
+        print(f"Validation Results (Single Patch Mode):")
         print(f"Total Attacks: {number_of_attacks}")
         print(f"Successful Attacks: {successful_attacks}")
         print(f"Success Rate: {successful_attacks / number_of_attacks:.2%}")
@@ -118,3 +139,5 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
     if all_stop_sign_scores_patch:
         avg_score = sum(all_stop_sign_scores_patch) / len(all_stop_sign_scores_patch)
         print(f"Average Stop Sign Score (Patched): {avg_score:.4f}")
+
+    return all_stop_sign_scores_patch, number_of_attacks

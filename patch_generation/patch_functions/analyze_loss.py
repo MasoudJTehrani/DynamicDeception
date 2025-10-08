@@ -5,7 +5,6 @@ import os
 
 def analyze_loss(loss, optimizer, learning_rate, disguise_distance_factor, ap, current_dir):
     plt.style.use('ggplot')
-    matplotlib.use('Agg')  # Use the 'Agg' backend for headless mode
 
     loss_history = []
     for epoch in loss:

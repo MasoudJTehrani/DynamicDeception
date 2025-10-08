@@ -11,6 +11,8 @@ from .save_load_person_detections import save_load_person_detections
 from .patch_generator import patch_generator
 from .analyze_loss import analyze_loss
 from .validate_patch import validate_patch
+from .visualize_validation import visualize_validation
+from .save_load_patch import save_patch, load_patch
 
 import art.attacks.evasion
 from art.attacks.evasion import AdversarialPatchPyTorch
