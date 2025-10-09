@@ -2,26 +2,33 @@
 # This sets up the scenario. then the main.py code uses the #_evaluation.json file to evaluate different setups
 
 town: "Town07"
+
+# Pedestrian spawn Location
 ped_x: 15.5
 ped_y: 55.5
 ped_z: 1.5
-target_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
-target_ped_y: 0
-target_ped_z: 0
-ped_speed: 2
-ped_distance: 10
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
+target_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
+target_ped_y: 0
+target_ped_z: 0
+ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving
+
+# Weather info
 sun_altitude_angle: 120.0
 sun_azimuth_angle: 30.0
-npc_spawn_points: [22, 46, 45, 108, 111]
-start_loc: 10
-end_loc: 37
+
+# NPCs spawn location
+npc_spawn_points: [22, 46, 45, 108, 111] # Sometimes needs to be changed
+
+# Ego vehicle start and ending location
 start_x: 29
 start_y: 57
 start_z: 1
-end_x: -13 
+end_x: -13
 end_y: 57
 end_z: 1
+
+# Skip the scenario if this amount of time is passed to avoid infinite loop
 time_allowed: 360
