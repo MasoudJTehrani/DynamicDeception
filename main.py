@@ -111,7 +111,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        main(patch_mode=args.patch, eval_mode=args.scenario)
+        main(patch_mode=args.patch, scenario=args.scenario)
     except KeyboardInterrupt:
         pass
     finally:
