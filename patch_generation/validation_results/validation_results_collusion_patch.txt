@@ -1,0 +1,10 @@
+Validation Results (Using Patch):
+Validation Results (Collusion Mode):
+Total Attacks: 304
+Successful Attacks (Both Halves): 36
+Successful Attacks (Left Half): 43
+Successful Attacks (Right Half): 1
+Success Rate (Both Halves): 11.84%
+Success Rate (Left Half): 14.14%
+Success Rate (Right Half): 0.33%
+Average Stop Sign Score (Patched): 0.6190

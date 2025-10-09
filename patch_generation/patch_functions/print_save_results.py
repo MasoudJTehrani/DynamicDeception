@@ -11,7 +11,7 @@ def print_save_results(successful_attacks, number_of_attacks, all_stop_sign_scor
     print("\n" + header)
 
     if generation_mode == "collusion" and config.get('TRY_HALF_PATCH', False):
-        lines.append("Validation Results (Collusion Mode with Half Patch):")
+        lines.append("Validation Results (Collusion Mode):")
         lines.append(f"Total Attacks: {number_of_attacks}")
         lines.append(f"Successful Attacks (Both Halves): {successful_attacks}")
         lines.append(f"Successful Attacks (Left Half): {successful_attacks_l}")
@@ -47,10 +47,10 @@ def print_save_results(successful_attacks, number_of_attacks, all_stop_sign_scor
     # Ensure current_dir exists and save results to file
     os.makedirs(current_dir, exist_ok=True)
     if use_patch:
-        results_path = os.path.join(current_dir, f"validation_results_{generation_mode}_patch.txt")
+        results_path = os.path.join(current_dir, f"validation_results/validation_results_{generation_mode}_patch.txt")
     else:
-        results_path = os.path.join(current_dir, f"validation_results_{generation_mode}_disguise.txt")
-        
+        results_path = os.path.join(current_dir, f"validation_results/validation_results_{generation_mode}_disguise.txt")
+
     try:
         with open(results_path, 'w') as f:
             f.write("\n".join(lines) + "\n")

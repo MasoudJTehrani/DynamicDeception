@@ -1,0 +1,10 @@
+Validation Results (Using Disguise):
+Validation Results (Collusion Mode):
+Total Attacks: 304
+Successful Attacks (Both Halves): 19
+Successful Attacks (Left Half): 6
+Successful Attacks (Right Half): 3
+Success Rate (Both Halves): 6.25%
+Success Rate (Left Half): 1.97%
+Success Rate (Right Half): 0.99%
+Average Stop Sign Score (Patched): 0.6647

@@ -1,10 +1,10 @@
 from patch_functions import *
 
 def main(generation_mode, load):
-    print(f"Generation mode selected: {generation_mode}")
+    print(f"\nGeneration mode selected: {generation_mode}")
     print(f"Load patch from file: {load}")
 
-    #------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------
     # Initialization and Configuration
 
     # Set Environment Variables
@@ -20,7 +20,7 @@ def main(generation_mode, load):
 
     INPUT_SHAPE = (config['CHANNELS'], config['HEIGHT'], config['WIDTH'])
 
-    #------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------
     # Model Setup
     # Check for CUDA availability
     check_cuda()
@@ -34,19 +34,18 @@ def main(generation_mode, load):
     # Load and filter dataset
     training_images_for_generation, dets, validation_dirs, transform, dirs = load_and_predict_dataset(detector, INPUT_SHAPE, config['DATASET_CUTOFF_GENERATE'], config['DATASET_CUTOFF'], os.path.join(current_dir, config['TRAINING_DATASET_DIR']), config['DATASET_URL'])
 
-    # Save or load the person detections to/from pickle file
-    preds_orig_person = save_load_person_detections(dets, config['OBJECT_CATEGORY_NAMES'], extract_predictions, load_data, save_data)
-    patch_locations = preds_orig_person # Using this, the patches will be applied on the pedestrians locations
+    # Save or load the person detections to/from pickle file. Using this, the patches will be applied on the pedestrians locations
+    patch_locations = save_load_person_detections(dets, config['OBJECT_CATEGORY_NAMES'], extract_predictions, load_data, save_data, current_dir)
 
     # ------------------------------------------------------------------------------------------------------
     # Patch Generation
-    # Save or load patch, loss, and ap to a file using pickle. This file is not pushed to git.
-    # If you want to generate a new patch, set load_patch to false.
+    # Save or load patch, loss, and ap to a file using pickle. This file is not pushed to git
+    # If you want to generate a new patch, set -load to false
     if not load:
         patch, loss, ap = patch_generator(detector, generation_mode, training_images_for_generation, patch_locations, transform, yaml_file_path, current_dir)
-        save_patch(patch, loss, ap, os.path.join(current_dir, f"patch_results_{generation_mode}.pkl"))
+        save_patch(patch, loss, ap, os.path.join(current_dir, f"pickles/patch_results_{generation_mode}.pkl"))
     else:
-        patch, loss, ap = load_patch(os.path.join(current_dir, f"patch_results_{generation_mode}.pkl"))
+        patch, loss, ap = load_patch(os.path.join(current_dir, f"pickles/patch_results_{generation_mode}.pkl"))
 
     # ------------------------------------------------------------------------------------------------------
     # Loss analysis
