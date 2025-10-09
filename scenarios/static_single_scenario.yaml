@@ -19,3 +19,4 @@ start_z: 1
 end_x: -13 
 end_y: 57
 end_z: 1
+time_allowed: 360

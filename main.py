@@ -1,17 +1,25 @@
 # import all the functions in the functions directory
 from functions import *
 
-
 # Add the directory containing PCLA.py to the Python path
+
+# -------------------------- Change this to your PCLA directory --------------------------
 sys.path.append(os.path.dirname(os.path.abspath("/home/vortex/PCLA")))
-current_dir = os.path.dirname(os.path.abspath(__file__))
-yaml_file_path = os.path.join(current_dir, 'scenarios', 'dynamic_single_scenario.yaml')
-json_file_path = os.path.join(current_dir, 'scenarios', 'single_evaluation.json')
+# -------------------------- Change this to your PCLA directory --------------------------
+
 
 from PCLA import PCLA
 
-def main():
+def main(patch_mode='single', scenario='dynamic'):
 
+    print(f"Patch mode: {patch_mode}, Evaluation mode: {scenario}")
+
+    # Path to the configuration files
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_file_path = os.path.join(current_dir, f'scenarios/{scenario}_{patch_mode}_scenario.yaml')
+    json_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_evaluation.json')
+
+    # Connect to the CARLA server
     client = carla.Client('localhost', 2000)
     client.set_timeout(10.0)
 
@@ -68,12 +76,10 @@ def main():
                 route = "route.xml"
                 pcla = PCLA.PCLA(agent_name, vehicle, route, client)
 
-                dynamic = True
                 begin_time = time.time()
-                time_allowed = 360
                 # Run the vehicle until it reaches the destination or a certain time is passed
-                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) and ((time.time() - begin_time) < time_allowed) :
-                    if dynamic and sp_peds: # Change this later
+                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) and ((time.time() - begin_time) < config['time_allowed']) :
+                    if scenario == 'dynamic' and sp_peds: # Change this later
                         move_pedestrian(pedestrian, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
@@ -92,10 +98,21 @@ def main():
 
 if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description='Run DynamicDeception scenarios.')
+    parser.add_argument('-patch', '--patch',
+                        choices=['single', 'collusion'],
+                        default='single',
+                        help='The patch mode which says which type of patch should be used for evaluation (default: single)')
+    parser.add_argument('-scenario', '--scenario',
+                        choices=['dynamic', 'static'],
+                        default='dynamic',
+                        help='The scenario mode which can be dynamic or static to show whether to move the pedestrian or not (default: dynamic)')
+
+    args = parser.parse_args()
+
     try:
-        main()
+        main(patch_mode=args.patch, eval_mode=args.scenario)
     except KeyboardInterrupt:
         pass
     finally:
         print('Done.')
-
