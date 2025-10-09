@@ -12,7 +12,7 @@ from PCLA import PCLA
 
 def main(patch_mode='single', scenario='dynamic'):
 
-    print(f"Patch mode: {patch_mode}, Evaluation mode: {scenario}")
+    print(f"Patch mode: {patch_mode}, Scenario mode: {scenario}")
 
     # Path to the configuration files
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +29,10 @@ def main(patch_mode='single', scenario='dynamic'):
 
 
     client.load_world(config['town'])
+
+    # Keep references so final cleanup can stop/join the thread if needed
+    stop_event = None
+    enter_thread = None
 
     try:
         # Initialize the client, get the world and set the weather
@@ -76,19 +80,44 @@ def main(patch_mode='single', scenario='dynamic'):
                 route = "route.xml"
                 pcla = PCLA.PCLA(agent_name, vehicle, route, client)
 
+                # Allow user to abort the run by pressing Enter
+                # Use select to avoid a permanently blocking input() so we can stop the thread cleanly.
+                stop_event = threading.Event()
+                enter_thread = threading.Thread(target=wait_for_enter, args=(stop_event,), daemon=True)
+                enter_thread.start()
+
+                # Run the vehicle until it reaches the destination, time runs out, or user presses Enter
                 begin_time = time.time()
-                # Run the vehicle until it reaches the destination or a certain time is passed
-                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) and ((time.time() - begin_time) < config['time_allowed']) :
-                    if scenario == 'dynamic' and sp_peds: # Change this later
+                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) \
+                      and ((time.time() - begin_time) < config['time_allowed']) \
+                      and (not stop_event.is_set()):
+                    if scenario == 'dynamic' and sp_peds:
                         move_pedestrian(pedestrian, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()
-                
+
+                if stop_event.is_set():
+                    print("--------Scenario aborted early by user (Enter pressed)--------")
+                else:
+                    # signal the thread to exit (if it's still waiting) and join it
+                    stop_event.set()
+                    if enter_thread is not None and enter_thread.is_alive():
+                        enter_thread.join(timeout=1.0)
+
                 # Clean up the actors and PCLA instance
                 clean_up(npc_list, pedestrian, pcla)
 
     finally:
+        # Ensure the enter thread is stopped/joined before final exit
+        try:
+            if stop_event is not None:
+                stop_event.set()
+            if enter_thread is not None and enter_thread.is_alive():
+                enter_thread.join(timeout=1.0)
+        except Exception:
+            pass
+
         # Restore the original settings
         settings.synchronous_mode = False
         world.apply_settings(settings)
