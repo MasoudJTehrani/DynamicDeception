@@ -1,4 +1,4 @@
-def is_far_from(loc1, loc2, max_distance=1.0):
+def is_far_from(loc1, loc2, max_distance=2.0):
     """
     Checks if two carla.Location objects are close to each other.
     Args:

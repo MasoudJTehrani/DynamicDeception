@@ -10,6 +10,7 @@ ped_z: 1.5
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
+sec_ped_distance: 0
 
 # Weather info
 sun_altitude_angle: 120.0

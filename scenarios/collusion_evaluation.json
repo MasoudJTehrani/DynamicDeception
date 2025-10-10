@@ -1,0 +1,24 @@
+{
+    "simlingo_simlingo": {
+        "benign": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0001", "walker.pedestrian.0001"]
+        },
+        "adversarial-left": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["", "walker.pedestrian.0001"]
+        },
+        "adversarial-right": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0001", ""]
+        },
+        "adversarial-both": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["", ""]
+        }
+    }
+}

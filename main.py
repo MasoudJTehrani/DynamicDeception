@@ -12,11 +12,11 @@ from PCLA import PCLA
 
 def main(patch_mode='single', scenario='dynamic'):
 
-    print(f"Patch mode: {patch_mode}, Scenario mode: {scenario}")
+    print(f"Patch mode: {patch_mode}\nScenario mode: {scenario}")
 
     # Path to the configuration files
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    yaml_file_path = os.path.join(current_dir, f'scenarios/{scenario}_{patch_mode}_scenario.yaml')
+    yaml_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_{scenario}_scenario.yaml')
     json_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_evaluation.json')
 
     # Connect to the CARLA server
@@ -49,14 +49,14 @@ def main(patch_mode='single', scenario='dynamic'):
             # The inner loop iterates through each scenario for the current agent
             for scenario_name, scenario_data in agent_scenarios.items():
                 # Extract the variables for the current scenario
-                sp_npcs, sp_peds, pedestrian_name = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_name"))
-                print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_name)
+                sp_npcs, sp_peds, pedestrian_names = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_names"))
+                print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_names)
                 
                 # Spawning the pedestrian
                 bpLibrary = world.get_blueprint_library()
-                pedestrian = None
+                pedestrians = None
                 if sp_peds:
-                    pedestrian = spawn_pedestrian(world, bpLibrary, pedestrian_name, config['ped_x'], config['ped_y'], config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'])
+                    pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], config['sec_ped_distance'])
 
                 # Spawning the npc vehicles
                 vehicle_spawn_points = world.get_map().get_spawn_points()
@@ -88,11 +88,11 @@ def main(patch_mode='single', scenario='dynamic'):
 
                 # Run the vehicle until it reaches the destination, time runs out, or user presses Enter
                 begin_time = time.time()
-                while is_far_from(vehicle.get_location(), end_loc, max_distance=2.0) \
+                while is_far_from(vehicle.get_location(), end_loc) \
                       and ((time.time() - begin_time) < config['time_allowed']) \
                       and (not stop_event.is_set()):
                     if scenario == 'dynamic' and sp_peds:
-                        move_pedestrian(pedestrian, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
+                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()
@@ -106,7 +106,7 @@ def main(patch_mode='single', scenario='dynamic'):
                         enter_thread.join(timeout=1.0)
 
                 # Clean up the actors and PCLA instance
-                clean_up(npc_list, pedestrian, pcla)
+                clean_up(npc_list, pedestrians, pcla)
 
     finally:
         # Ensure the enter thread is stopped/joined before final exit
@@ -123,7 +123,7 @@ def main(patch_mode='single', scenario='dynamic'):
         world.apply_settings(settings)
 
         # Clean up in case of an error
-        clean_up(npc_list, pedestrian, pcla)
+        clean_up(npc_list, pedestrians, pcla)
 
 if __name__ == '__main__':
 

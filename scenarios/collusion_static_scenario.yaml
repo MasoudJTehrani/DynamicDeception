@@ -4,16 +4,13 @@
 town: "Town07"
 
 # Pedestrian spawn Location
-ped_x: 15.5
+ped_x: 5.5
 ped_y: 55.5
 ped_z: 1.5
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
-target_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
-target_ped_y: 0
-target_ped_z: 0
-ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving
+sec_ped_distance: -0.5
 
 # Weather info
 sun_altitude_angle: 120.0
