@@ -2,7 +2,7 @@ from patch_functions import *
 
 def main(generation_mode, load):
     print(f"\nGeneration mode: {generation_mode}")
-    print(f"Load patch from file: {load}")
+    print(f"Load patch from pkl: {load}")
 
     # ------------------------------------------------------------------------------------------------------
     # Initialization and Configuration
