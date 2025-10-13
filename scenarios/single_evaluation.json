@@ -10,15 +10,15 @@
             "sp_peds": true,
             "pedestrian_names": ["walker.pedestrian.0001"]
         },
+        "camellia": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0060"]
+        },
         "adversarial": {
             "sp_npcs": true,
             "sp_peds": true,
             "pedestrian_names": ["walker.pedestrian.0061"]
-        },
-        "camellia": {
-            "sp_npcs": true,
-            "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0062"]
         }
     }
 }

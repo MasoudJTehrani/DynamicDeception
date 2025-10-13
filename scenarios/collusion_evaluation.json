@@ -8,17 +8,17 @@
         "adversarial-left": {
             "sp_npcs": true,
             "sp_peds": true,
-            "pedestrian_names": ["", "walker.pedestrian.0001"]
+            "pedestrian_names": ["walker.pedestrian.0062", "walker.pedestrian.0001"]
         },
         "adversarial-right": {
             "sp_npcs": true,
             "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0001", ""]
+            "pedestrian_names": ["walker.pedestrian.0001", "walker.pedestrian.0063"]
         },
         "adversarial-both": {
             "sp_npcs": true,
             "sp_peds": true,
-            "pedestrian_names": ["", ""]
+            "pedestrian_names": ["walker.pedestrian.0062", "walker.pedestrian.0063"]
         }
     }
 }
