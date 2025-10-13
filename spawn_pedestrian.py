@@ -4,7 +4,7 @@ import time
 client = carla.Client('localhost', 2000)
 world = client.get_world()
 
-# Spawn and despawn pedestrian multiple pedestrians one by one at the same location to find the desired one
+# Spawn and despawn pedestrian multiple pedestrians one by one at the same location
 def main():
     try:
         settings = world.get_settings()
@@ -24,7 +24,7 @@ def main():
         spawn_point.location += spec_transform.get_forward_vector() * 5  # 5 meters in front
         print(f'Spawn point for pedestrians: {spawn_point.location}')
 
-
+        # Change the range in the for loop to try different pedestrians
         for i in range(59, 65):
             pedestrian_bps = blueprint_library.filter('walker.pedestrian.00' + str(i).zfill(2))
             if len(pedestrian_bps) > 0:

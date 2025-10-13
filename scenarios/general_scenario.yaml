@@ -1,0 +1,31 @@
+# Configuration for the CARLA simulation scenario
+# This sets up the general scenario. other config files are designed for each evaluation types
+# The main.py code uses the #_evaluation.json file to evaluate different setups
+
+town: "Town07"
+
+# Pedestrian spawn location
+ped_x: -32
+ped_y: 53
+ped_z: 1
+ped_pitch: 0
+ped_yaw: 180
+ped_roll: 0
+
+# Weather info
+sun_altitude_angle: 120.0
+sun_azimuth_angle: 30.0
+
+# NPCs spawn location
+npc_spawn_points: [108, 109, 110, 111] # Sometimes needs to be changed.
+
+# Ego vehicle start and ending location
+start_x: -14
+start_y: 58
+start_z: 1
+end_x: -72
+end_y: 58
+end_z: 1
+
+# Skip the scenario if this amount of time is passed to avoid infinite loop
+time_allowed: 360

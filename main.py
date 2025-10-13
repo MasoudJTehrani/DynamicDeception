@@ -16,7 +16,8 @@ def main(patch_mode='single', scenario='dynamic'):
 
     # Path to the configuration files
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    yaml_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_{scenario}_scenario.yaml')
+    config_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_{scenario}_scenario.yaml')
+    general_config_path = os.path.join(current_dir, 'scenarios/general_scenario.yaml')
     json_file_path = os.path.join(current_dir, f'scenarios/{patch_mode}_evaluation.json')
 
     # Connect to the CARLA server
@@ -24,9 +25,13 @@ def main(patch_mode='single', scenario='dynamic'):
     client.set_timeout(10.0)
 
     # Load scenario configuration from YAML file
-    with open(yaml_file_path, 'r') as file:
+    with open(config_file_path, 'r') as file:
         config = yaml.safe_load(file)
-
+        
+    # Load general configuration from YAML file and add to config dictionary
+    with open(general_config_path, 'r') as file:
+        general_config = yaml.safe_load(file)
+    config.update(general_config)
 
     client.load_world(config['town'])
 
@@ -38,7 +43,7 @@ def main(patch_mode='single', scenario='dynamic'):
         # Initialize the client, get the world and set the weather
         traffic_manager, world, settings, synchronous_master = start_client(client)
         set_weather(world, config['sun_altitude_angle'], config['sun_azimuth_angle'])
-        
+
         # Load the JSON data from a file
         with open(json_file_path, 'r') as f:
             evals = json.load(f)
