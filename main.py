@@ -24,13 +24,14 @@ def main(patch_mode='single', scenario='dynamic'):
     client = carla.Client('localhost', 2000)
     client.set_timeout(10.0)
 
-    # Load scenario configuration from YAML file
-    with open(config_file_path, 'r') as file:
-        config = yaml.safe_load(file)
-        
     # Load general configuration from YAML file and add to config dictionary
     with open(general_config_path, 'r') as file:
         general_config = yaml.safe_load(file)
+
+    # Load scenario configuration from YAML file
+    with open(config_file_path, 'r') as file:
+        config = yaml.safe_load(file)
+
     config.update(general_config)
 
     client.load_world(config['town'])
@@ -43,7 +44,8 @@ def main(patch_mode='single', scenario='dynamic'):
         # Initialize the client, get the world and set the weather
         traffic_manager, world, settings, synchronous_master = start_client(client)
         set_weather(world, config['sun_altitude_angle'], config['sun_azimuth_angle'])
-
+        #print(world.get_spectator().get_transform())
+        #return
         # Load the JSON data from a file
         with open(json_file_path, 'r') as f:
             evals = json.load(f)
@@ -61,7 +63,9 @@ def main(patch_mode='single', scenario='dynamic'):
                 bpLibrary = world.get_blueprint_library()
                 pedestrians = None
                 if sp_peds:
-                    pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], config['sec_ped_distance'])
+                    pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], 
+                                                   config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], 
+                                                   config['sec_ped_distance_x'], config['sec_ped_distance_y'])
 
                 # Spawning the npc vehicles
                 vehicle_spawn_points = world.get_map().get_spawn_points()
@@ -97,7 +101,8 @@ def main(patch_mode='single', scenario='dynamic'):
                       and ((time.time() - begin_time) < config['time_allowed']) \
                       and (not stop_event.is_set()):
                     if scenario == 'dynamic' and sp_peds:
-                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
+                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], 
+                                        config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()

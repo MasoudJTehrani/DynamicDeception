@@ -1,6 +1,6 @@
 import carla
 
-def spawn_pedestrian(world, bpLibrary, pedestrian_names, x, y, z, pitch, yaw, roll, sec_ped_distance):
+def spawn_pedestrian(world, bpLibrary, pedestrian_names, x, y, z, pitch, yaw, roll, sec_ped_distance_x, sec_ped_distance_y):
     """
     Spawns pedestrians at a predefined location in the CARLA world.
     Args:
@@ -22,7 +22,7 @@ def spawn_pedestrian(world, bpLibrary, pedestrian_names, x, y, z, pitch, yaw, ro
             carla.Rotation(pitch=pitch, yaw=yaw, roll=roll)
         ), 
         carla.Transform(
-            carla.Location(x=x, y= y + sec_ped_distance, z=z),
+            carla.Location(x=x + + sec_ped_distance_x, y= y + sec_ped_distance_y, z=z),
             carla.Rotation(pitch=pitch, yaw=yaw, roll=roll)
         )
     ]

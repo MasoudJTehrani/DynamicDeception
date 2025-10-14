@@ -2,8 +2,15 @@
 
 # Pedestrian spawn Location
 
-sec_ped_distance: -0.5
+ped_x: 14.3
+ped_y: 54.6
+ped_z: 1
+ped_pitch: 0
+ped_yaw: 180
+ped_roll: 0
+sec_ped_distance_y: -0.5
+sec_ped_distance_x: -0.2
 target_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
 target_ped_y: -0.05
 target_ped_z: 0
-ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving
+ped_distance: 9 # The distance of the pedestrian from the vehicle to start moving
