@@ -13,4 +13,4 @@ sec_ped_distance_x: 0
 target_ped_x: -1 # This will make the pedestrian move in the direction of x
 target_ped_y: -0.05
 target_ped_z: 0
-ped_distance: 8 # The distance of the pedestrian from the vehicle to start moving
+ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving

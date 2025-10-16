@@ -2,6 +2,7 @@ __pycache__/
 wandb/
 pretrained/
 eval/
+debug/
 yolov5s.pt
 patch_generation/datasets
 patch_generation/plots/validation/

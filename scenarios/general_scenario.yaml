@@ -9,7 +9,7 @@ sun_altitude_angle: 120.0
 sun_azimuth_angle: 20.0
 
 # NPCs spawn location
-npc_spawn_points: [22, 46, 45] # Sometimes needs to be changed.
+npc_spawn_points: [22, 46, 45, 108] # Sometimes needs to be changed.
 
 # Ego vehicle start and ending location
 start_x: 28

@@ -1,5 +1,10 @@
 {
     "simlingo_simlingo": {
+        "no-pedestrian": {
+            "sp_npcs": true,
+            "sp_peds": false,
+            "pedestrian_names": [""]
+        },
         "benign": {
             "sp_npcs": true,
             "sp_peds": true,
