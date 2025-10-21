@@ -11,6 +11,7 @@ from .clean_up import clean_up
 from .calc_distance import calc_distance
 from .move_pedestrian import move_pedestrian
 from .wait_for_enter import wait_for_enter
+from .rename_results_file import rename_results_file
 
 import os
 import sys

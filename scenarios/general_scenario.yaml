@@ -20,4 +20,4 @@ end_y: 58
 end_z: 1
 
 # Skip the scenario if this amount of time is passed to avoid infinite loop
-time_allowed: 240
+time_allowed: 360

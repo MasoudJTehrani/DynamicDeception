@@ -5,12 +5,15 @@
 ped_x: 14.3
 ped_y: 55
 ped_z: 1
+target_ped_x: 5.6 # Where to stop moving the pedestrians
+target_ped_y: 54.6
+target_ped_z: 1
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
 sec_ped_distance_y: 0
 sec_ped_distance_x: 0
-target_ped_x: -1 # This will make the pedestrian move in the direction of x
-target_ped_y: -0.05
-target_ped_z: 0
+move_ped_x: -1 # This will make the pedestrian move in the direction of x
+move_ped_y: -0.05
+move_ped_z: 0
 ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving

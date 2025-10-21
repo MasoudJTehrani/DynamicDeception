@@ -1,5 +1,6 @@
 import time
-def clean_up(npc_list, pedestrians, pcla):
+import os
+def clean_up(current_dir, npc_list, pedestrians, pcla):
     """Cleans up the spawned NPCs, pedestrian, vehicle, and PCLA instance.
 
     Args:
@@ -11,6 +12,11 @@ def clean_up(npc_list, pedestrians, pcla):
         pcla (PCLA): The PCLA instance.
 
     """
+    # Recreate an empty results file for future
+    with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
+        f.write('pedestrians: 0\n')
+        f.write('stop signs: 0\n')
+
     print('...Cleaning up the actors and PCLA instance...')
     if npc_list:
         for npc in npc_list:

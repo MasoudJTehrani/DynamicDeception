@@ -100,9 +100,11 @@ def main(patch_mode='single', scenario='dynamic'):
                 while is_far_from(vehicle.get_location(), end_loc) \
                       and ((time.time() - begin_time) < config['time_allowed']) \
                       and (not stop_event.is_set()):
+                    # Move the pedestrians if in dynamic scenario and the pedestrian is far from target location
                     if scenario == 'dynamic' and sp_peds:
-                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['target_ped_x'], 
-                                        config['target_ped_y'], config['target_ped_z'], vehicle.get_velocity())
+                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['move_ped_x'], 
+                                        config['move_ped_y'], config['move_ped_z'], config['target_ped_x'], config['target_ped_y'], 
+                                        config['target_ped_z'], vehicle.get_velocity())
                     ego_action = pcla.get_action()
                     vehicle.apply_control(ego_action)
                     world.tick()
@@ -114,9 +116,11 @@ def main(patch_mode='single', scenario='dynamic'):
                     stop_event.set()
                     if enter_thread is not None and enter_thread.is_alive():
                         enter_thread.join(timeout=1.0)
+                    # save the language results file with appropriate name
+                    rename_results_file(current_dir, patch_mode, scenario, scenario_name)
 
                 # Clean up the actors and PCLA instance
-                clean_up(npc_list, pedestrians, pcla)
+                clean_up(current_dir, npc_list, pedestrians, pcla)
 
     finally:
         # Ensure the enter thread is stopped/joined before final exit
@@ -133,7 +137,7 @@ def main(patch_mode='single', scenario='dynamic'):
         world.apply_settings(settings)
 
         # Clean up in case of an error
-        clean_up(npc_list, pedestrians, pcla)
+        clean_up(current_dir, npc_list, pedestrians, pcla)
 
 if __name__ == '__main__':
 

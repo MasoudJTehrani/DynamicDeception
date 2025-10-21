@@ -1,6 +1,6 @@
 def is_far_from(loc1, loc2, max_distance=2.0):
     """
-    Checks if two carla.Location objects are close to each other.
+    Checks if two carla.Location objects are far from each other.
     Args:
         loc1 (carla.Location): The first location.
         loc2 (carla.Location): The second location.
