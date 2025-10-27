@@ -9,7 +9,7 @@ def move_pedestrian(pedestrians, vehicle, calc_distance, ped_distance, move_ped_
     distance = calc_distance(vehicle.get_location(), ped_loc)
     distance_to_target = calc_distance(ped_loc, carla.Location(x=target_ped_x, y=target_ped_y, z=target_ped_z))
 
-    if (distance < ped_distance) and (distance_to_target > 0.5):
+    if (distance < ped_distance) and (distance_to_target > 0.6):
         # Get the speed of the vehicle based on the velocity
         speed_m_s = math.sqrt(
             vehicle_velocity.x**2 + 

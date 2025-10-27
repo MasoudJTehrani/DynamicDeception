@@ -20,7 +20,8 @@ DATASET_CUTOFF_GENERATE: 0 # cutoff for the dataset size, applied before train/t
 DATASET_CUTOFF: 0 # cutoff for the number of images used for patch training, applied on training set
 
 # Patch
-SINGLE_DISGUISE_PATH: "disguises/camellia.jpg"
+target_class: "motorcycle"
+SINGLE_DISGUISE_PATH: "disguises/motorbike.jpg"
 COLLUSION_DISGUISE_PATH: "disguises/camellia_split.jpg"
 PRETRAINED_SINGLE_PATH: None # path of the patch to start from
 PRETRAINED_COLLUSION_PATH: None # path of the patch to start from
@@ -59,13 +60,14 @@ patch_type: "square"
 patch_location: None # TODO This does not yet work if True, the scaling fails
 
 # Validation parameters
-classes: ["stop sign", "banana", "person", "car", "truck", "traffic light"] # the classes we want to have shown in the plots
+classes: ["stop sign", "banana", "person", "car", "truck", "traffic light", "motorcycle"] # the classes we want to have shown in the plots
 n_boxes: 60 # max number of boxes to plot
 colordict: # color of the class visualizations
   "stop sign": [255, 0, 0]
   "banana": [0, 0, 255]
   "car": [200, 0, 200]
   "person": [0, 200, 200]
+  "motorcycle": [128, 128, 128]
 
 plot_threshold: 0.2 # min confidence to be plotted
 SCALE: None # random sampling. Change it to a random string to take the middle of the scale range: scale_max - (scale_max - scale_min)/2

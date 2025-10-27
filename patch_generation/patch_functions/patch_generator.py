@@ -38,7 +38,7 @@ def patch_generator(detector, generation_mode, training_images_for_generation,
     synthetic_y = {
         'boxes': np.array([[0,0,0,0]], dtype=np.float32), # TODO the box would be based on patch_location and patch_shape
         'scores': np.array([    1], dtype=np.float32),
-        'labels': np.array([config['OBJECT_CATEGORY_NAMES'].index("stop sign")])
+        'labels': np.array([config['OBJECT_CATEGORY_NAMES'].index(config['target_class'])])
     }
 
     pretrained_patch = None

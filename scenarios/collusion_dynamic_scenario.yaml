@@ -11,7 +11,7 @@ target_ped_z: 1
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
-sec_ped_distance_y: -0.5
+sec_ped_distance_y: -0.6
 sec_ped_distance_x: -0.2
 move_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
 move_ped_y: -0.05

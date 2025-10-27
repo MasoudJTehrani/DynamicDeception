@@ -2,23 +2,8 @@
     "simlingo_simlingo": {
         "no-pedestrian": {
             "sp_npcs": true,
-            "sp_peds": false,
-            "pedestrian_names": [""]
-        },
-        "benign": {
-            "sp_npcs": true,
             "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0001"]
-        },
-        "adversarial": {
-            "sp_npcs": true,
-            "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0061"]
-        },
-        "camellia": {
-            "sp_npcs": true,
-            "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0060"]
+            "pedestrian_names": ["walker.pedestrian.0074"]
         }
     }
 }

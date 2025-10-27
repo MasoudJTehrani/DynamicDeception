@@ -76,15 +76,15 @@ def validate_patch(detector, yaml_file_path, validation_dirs, dirs, generation_m
             preds_orig = extract_predictions(dets_orig[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['plot_threshold'], n_boxes=config['n_boxes'], classes=config['classes'])
 
             preds = extract_predictions(dets[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['plot_threshold'], n_boxes=config['n_boxes'], classes=config['classes'])
-            preds_stop_sign = extract_predictions(dets[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=["stop sign"])
+            preds_stop_sign = extract_predictions(dets[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=config['target_class'])
 
             overlapping_stop_sign_preds = overlapping(preds_stop_sign, target_boxes[i])
 
             if generation_mode == 'collusion' and config['TRY_HALF_PATCH']:
                 preds_l = extract_predictions(dets_l[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['plot_threshold'], n_boxes=config['n_boxes'], classes=config['classes'])
                 preds_r = extract_predictions(dets_r[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['plot_threshold'], n_boxes=config['n_boxes'], classes=config['classes'])
-                preds_stop_sign_l = extract_predictions(dets_l[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=["stop sign"])
-                preds_stop_sign_r = extract_predictions(dets_r[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=["stop sign"])
+                preds_stop_sign_l = extract_predictions(dets_l[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=config['target_class'])
+                preds_stop_sign_r = extract_predictions(dets_r[i], config['OBJECT_CATEGORY_NAMES'], conf_thresh=config['success_threshold'], n_boxes=config['n_boxes'], classes=config['target_class'])
                 overlapping_stop_sign_preds_l = overlapping(preds_stop_sign_l, target_boxes[i])
                 overlapping_stop_sign_preds_r = overlapping(preds_stop_sign_r, target_boxes[i])
                 if overlapping_stop_sign_preds_l[0]:
