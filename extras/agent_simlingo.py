@@ -701,7 +701,7 @@ class LingoAgent(autonomous_agent.AutonomousAgent):
         return result
 
     @torch.no_grad()
-    def run_step(self, input_data, timestamp, sensors=None):  # pylint: disable=locally-disabled, unused-argument
+    def run_step(self, input_data, timestamp, sensors=None, vehicle=None):  # pylint: disable=locally-disabled, unused-argument
         self.step += 1
 
         if not self.initialized:
