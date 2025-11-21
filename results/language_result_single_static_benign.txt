@@ -1,0 +1,2 @@
+pedestrians: 18
+stop signs: 80

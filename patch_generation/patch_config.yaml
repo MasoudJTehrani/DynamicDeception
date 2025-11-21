@@ -21,7 +21,7 @@ DATASET_CUTOFF: 0 # cutoff for the number of images used for patch training, app
 
 # Patch
 target_class: "stop sign"
-SINGLE_DISGUISE_PATH: "disguises/mountain.jpg"
+SINGLE_DISGUISE_PATH: "disguises/camellia.jpg"
 COLLUSION_DISGUISE_PATH: "disguises/camellia_split.jpg"
 PRETRAINED_SINGLE_PATH: None # path of the patch to start from
 PRETRAINED_COLLUSION_PATH: None # path of the patch to start from
