@@ -59,68 +59,75 @@ def main(patch_mode='single', scenario='dynamic'):
                 sp_npcs, sp_peds, pedestrian_names = (scenario_data[k] for k in ("sp_npcs", "sp_peds", "pedestrian_names"))
                 print_scenario_info(agent_name, scenario_name, sp_npcs, sp_peds, pedestrian_names)
                 
-                # Spawning the pedestrian
-                bpLibrary = world.get_blueprint_library()
-                pedestrians = None
-                if sp_peds:
-                    pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], 
-                                                   config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], 
-                                                   config['sec_ped_distance_x'], config['sec_ped_distance_y'])
+                for i in range(config['num_iterations']):
+                    print(f"----- Starting iteration {i+1} of {config['num_iterations']} -----")
+                    # Spawning the pedestrian
+                    bpLibrary = world.get_blueprint_library()
+                    pedestrians = None
+                    if sp_peds:
+                        pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], 
+                                                    config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], 
+                                                    config['sec_ped_distance_x'], config['sec_ped_distance_y'])
 
-                # Spawning the npc vehicles
-                vehicle_spawn_points = world.get_map().get_spawn_points()
-                npc_list = []
-                if sp_npcs:
-                    npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, config['npc_spawn_points'], traffic_manager)
+                    # Spawning the npc vehicles
+                    vehicle_spawn_points = world.get_map().get_spawn_points()
+                    npc_list = []
+                    if sp_npcs:
+                        npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, config['npc_spawn_points'], traffic_manager)
 
-                # Setting up the route and spawning the ego vehicle
-                start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=config['start_x'], y=config['start_y'], z=config['start_z']), vehicle_spawn_points)
-                end_loc , end_num = find_closest_spawn_point(world, carla.Location(x=config['end_x'], y=config['end_y'], z=config['end_z']), vehicle_spawn_points)
-                vehicle = world.spawn_actor(bpLibrary.filter('model3')[0], start_loc) # Spawning the ego vehicle
-                world.tick()
-
-                # Set the spectator according to the vehicle's transform
-                spectator = world.get_spectator()
-                spectator.set_transform(put_spectator(vehicle.get_transform()))
-                world.tick()
-
-                # Set up PCLA
-                make_route(client, start_num, end_num, vehicle_spawn_points, PCLA)
-                route = "route.xml"
-                pcla = PCLA.PCLA(agent_name, vehicle, route, client)
-
-                # Allow user to abort the run by pressing Enter
-                # Use select to avoid a permanently blocking input() so we can stop the thread cleanly.
-                stop_event = threading.Event()
-                enter_thread = threading.Thread(target=wait_for_enter, args=(stop_event,), daemon=True)
-                enter_thread.start()
-
-                # Run the vehicle until it reaches the destination, time runs out, or user presses Enter
-                begin_time = time.time()
-                while is_far_from(vehicle.get_location(), end_loc) \
-                      and ((time.time() - begin_time) < config['time_allowed']) \
-                      and (not stop_event.is_set()):
-                    # Move the pedestrians if in dynamic scenario and the pedestrian is far from target location
-                    if scenario == 'dynamic' and sp_peds:
-                        move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['move_ped_x'], 
-                                        config['move_ped_y'], config['move_ped_z'], config['target_ped_x'], config['target_ped_y'], 
-                                        config['target_ped_z'], vehicle.get_velocity())
-                    ego_action = pcla.get_action()
-                    vehicle.apply_control(ego_action)
+                    # Setting up the route and spawning the ego vehicle
+                    start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=config['start_x'], y=config['start_y'], z=config['start_z']), vehicle_spawn_points)
+                    end_loc , end_num = find_closest_spawn_point(world, carla.Location(x=config['end_x'], y=config['end_y'], z=config['end_z']), vehicle_spawn_points)
+                    vehicle = world.spawn_actor(bpLibrary.filter('model3')[0], start_loc) # Spawning the ego vehicle
                     world.tick()
 
-                if stop_event.is_set():
-                    print("--------Scenario aborted early by user (Enter pressed)--------")
-                else:
-                    # signal the thread to exit (if it's still waiting) and join it
-                    stop_event.set()
-                    if enter_thread is not None and enter_thread.is_alive():
-                        enter_thread.join(timeout=1.0)
-                    # save the language results file with appropriate name
-                    rename_results_file(current_dir, patch_mode, scenario, scenario_name)
+                    # Set the spectator according to the vehicle's transform
+                    spectator = world.get_spectator()
+                    spectator.set_transform(put_spectator(vehicle.get_transform()))
+                    world.tick()
 
-                # Clean up the actors and PCLA instance
-                clean_up(current_dir, npc_list, pedestrians, pcla)
+                    # Set up PCLA
+                    make_route(client, start_num, end_num, vehicle_spawn_points, PCLA)
+                    route = "route.xml"
+                    pcla = PCLA.PCLA(agent_name, vehicle, route, client)
+
+                    # Allow user to abort the run by pressing Enter
+                    # Use select to avoid a permanently blocking input() so we can stop the thread cleanly.
+                    stop_event = threading.Event()
+                    enter_thread = threading.Thread(target=wait_for_enter, args=(stop_event,), daemon=True)
+                    enter_thread.start()
+
+                    # Run the vehicle until it reaches the destination, time runs out, or user presses Enter
+                    begin_time = time.time()
+                    while is_far_from(vehicle.get_location(), end_loc) \
+                        and ((time.time() - begin_time) < config['time_allowed']) \
+                        and (not stop_event.is_set()):
+                        # Move the pedestrians if in dynamic scenario and the pedestrian is far from target location
+                        if scenario == 'dynamic' and sp_peds:
+                            move_pedestrian(pedestrians, vehicle, calc_distance, config['ped_distance'], config['move_ped_x'], 
+                                            config['move_ped_y'], config['move_ped_z'], config['target_ped_x'], config['target_ped_y'], 
+                                            config['target_ped_z'], vehicle.get_velocity())
+                        ego_action = pcla.get_action()
+                        vehicle.apply_control(ego_action)
+                        world.tick()
+
+                    if stop_event.is_set():
+                        print("--------Scenario aborted early by user (Enter pressed)--------")
+                    else:
+                        # signal the thread to exit (if it's still waiting) and join it
+                        stop_event.set()
+                        if enter_thread is not None and enter_thread.is_alive():
+                            enter_thread.join(timeout=1.0)
+
+                    # Clean up the actors and PCLA instance
+                    clean_up(npc_list, pedestrians, pcla)
+
+                # save the language results file with appropriate name
+                rename_results_file(current_dir, patch_mode, scenario, scenario_name)
+                # Recreate an empty results file for future
+                with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
+                    f.write('pedestrians: 0\n')
+                    f.write('stop signs: 0\n')
 
     finally:
         # Ensure the enter thread is stopped/joined before final exit
@@ -137,7 +144,13 @@ def main(patch_mode='single', scenario='dynamic'):
         world.apply_settings(settings)
 
         # Clean up in case of an error
-        clean_up(current_dir, npc_list, pedestrians, pcla)
+        clean_up(npc_list, pedestrians, pcla)
+
+        # Recreate an empty results file for future
+        with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
+            f.write('pedestrians: 0\n')
+            f.write('stop signs: 0\n')
+        
 
 if __name__ == '__main__':
 

@@ -86,7 +86,7 @@ def print_and_save_language(language):
                 stop_sign_count += 1
             else:
                 pedestrian_count += 1
-            print(f"Updated counts - Pedestrians: {pedestrian_count}, \nStop Signs: {stop_sign_count}")        
+            print(f"Updated counts \n\tPedestrians: {pedestrian_count} \n\tStop Signs: {stop_sign_count}")        
             
             # Write updated counts back to file
             with open(language_result_path, 'w') as f:

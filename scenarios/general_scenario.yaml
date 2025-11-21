@@ -20,4 +20,7 @@ end_y: 58
 end_z: 1
 
 # Skip the scenario if this amount of time is passed to avoid infinite loop
-time_allowed: 360
+time_allowed: 180
+
+# How many times a scenario is ran
+num_iterations: 10
