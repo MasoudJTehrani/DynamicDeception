@@ -11,6 +11,7 @@ def recreate_files(current_dir):
         f.write('stop signs: 0\n')
     
     with open(os.path.join(current_dir, 'results/language_result.csv'), 'w') as f:
+        f.write('val:\n')
         f.write('pedestrians:\n')
         f.write('stop signs:\n')
         

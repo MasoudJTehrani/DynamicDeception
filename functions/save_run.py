@@ -1,11 +1,12 @@
 import os
+import pandas as pd
 
 def save_run(current_dir):
     """Saves the run results by appending pedestrian and stop sign counts to CSV.
     Args:
         current_dir (str): The current directory where results are stored.
     """
-    
+
     # Read the language_result.txt file and extract numbers
     txt_path = os.path.join(current_dir, 'results/language_result.txt')
     csv_path = os.path.join(current_dir, 'results/language_result.csv')
@@ -24,19 +25,14 @@ def save_run(current_dir):
             elif 'stop signs:' in line.lower():
                 stop_signs_count = line.split(':')[-1].strip()
         
-        # Read existing CSV and append values
+        # Read existing CSV and append values using pandas
         if os.path.exists(csv_path):
-            with open(csv_path, 'r') as f:
-                csv_lines = f.readlines()
+            df = pd.read_csv(csv_path)
             
-            updated_lines = []
-            for line in csv_lines:
-                line = line.rstrip('\n')
-                if 'pedestrians:' in line.lower() and pedestrians_count:
-                    line += ',' + pedestrians_count
-                elif 'stop signs:' in line.lower() and stop_signs_count:
-                    line += ',' + stop_signs_count
-                updated_lines.append(line)
+            # Add 'num' column with the extracted counts
+            new_col = pd.DataFrame({
+                'num': [pedestrians_count, stop_signs_count]
+            })
+            df = pd.concat([df, new_col], axis=1)
             
-            with open(csv_path, 'w') as f:
-                f.write('\n'.join(updated_lines) + '\n')
+            df.to_csv(csv_path, index=False)

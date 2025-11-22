@@ -13,8 +13,11 @@ def rename_results_file(current_dir, patch_mode, scenario, scenario_name):
     df = pd.read_csv(old_file_path)
 
     # Calculate mean and std for each row and add as new column
-    df['mean_std'] = df.iloc[:, 1:].apply(lambda row: f"{row.mean():.1f}+-{row.std():.1f}", axis=1)
+    mean_std_values = []
+    for i in range(len(df)):
+        mean_std_values.append(f"{df.iloc[i, 1:].mean():.2f}+-{df.iloc[i, 1:].std():.2f}")
 
-    # Save the modified dataframe
-    df.to_csv(new_file_path, index=False)
+    df['mean+-std'] = mean_std_values
+    # Save the modified dataframe with header
+    df.to_csv(new_file_path, index=False, header=True)
     print(f'Results file renamed to: {new_file_name}')

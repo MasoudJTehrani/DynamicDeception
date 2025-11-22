@@ -1,2 +1,2 @@
-pedestrians: 0
-stop signs: 0
+pedestrians: 7
+stop signs: 17
