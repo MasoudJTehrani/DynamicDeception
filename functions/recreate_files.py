@@ -1,17 +1,18 @@
 import os
 
-def recreate_files(current_dir):
+def recreate_files(current_dir, which='both'):
     """Recreates empty results files for future runs.
 
     Args:
         current_dir (str): The current directory where results are stored.
     """
-    with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
-        f.write('pedestrians: 0\n')
-        f.write('stop signs: 0\n')
+    if which == 'txt' or which == 'both':
+        with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
+            f.write('pedestrians: 0\n')
+            f.write('stop signs: 0\n')
     
-    with open(os.path.join(current_dir, 'results/language_result.csv'), 'w') as f:
-        f.write('val:\n')
-        f.write('pedestrians:\n')
-        f.write('stop signs:\n')
-        
+    if which == 'csv' or which == 'both':
+        with open(os.path.join(current_dir, 'results/language_result.csv'), 'w') as f:
+            f.write('val:\n')
+            f.write('pedestrians:\n')
+            f.write('stop signs:\n')

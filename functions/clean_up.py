@@ -14,6 +14,7 @@ def clean_up(current_dir, npc_list, pedestrians, pcla):
         pcla (PCLA): The PCLA instance.
 
     """
+    # First, save the run results
     save_run(current_dir)
 
     print('...Cleaning up the actors and PCLA instance...')

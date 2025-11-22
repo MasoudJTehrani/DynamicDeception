@@ -121,11 +121,12 @@ def main(patch_mode='single', scenario='dynamic'):
 
                     # Clean up the actors and PCLA instance
                     clean_up(current_dir, npc_list, pedestrians, pcla)
+                    # recreate the empty results txt for next scenario
+                    recreate_files(current_dir, which = 'txt')
 
                 # save the language results file with appropriate name
                 rename_results_file(current_dir, patch_mode, scenario, scenario_name)
-                # recreate the empty results files for next scenario
-                recreate_files(current_dir)
+                recreate_files(current_dir, which = 'csv')
 
     finally:
         # Ensure the enter thread is stopped/joined before final exit
@@ -143,9 +144,8 @@ def main(patch_mode='single', scenario='dynamic'):
 
         # Clean up in case of an error
         clean_up(current_dir, npc_list, pedestrians, pcla)
-
         # recreate the empty results files for next scenario
-        recreate_files(current_dir)
+        recreate_files(current_dir, which = 'both')
         
 
 if __name__ == '__main__':
