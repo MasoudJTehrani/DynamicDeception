@@ -120,14 +120,12 @@ def main(patch_mode='single', scenario='dynamic'):
                             enter_thread.join(timeout=1.0)
 
                     # Clean up the actors and PCLA instance
-                    clean_up(npc_list, pedestrians, pcla)
+                    clean_up(current_dir, npc_list, pedestrians, pcla)
 
                 # save the language results file with appropriate name
                 rename_results_file(current_dir, patch_mode, scenario, scenario_name)
-                # Recreate an empty results file for future
-                with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
-                    f.write('pedestrians: 0\n')
-                    f.write('stop signs: 0\n')
+                # recreate the empty results files for next scenario
+                recreate_files(current_dir)
 
     finally:
         # Ensure the enter thread is stopped/joined before final exit
@@ -144,12 +142,10 @@ def main(patch_mode='single', scenario='dynamic'):
         world.apply_settings(settings)
 
         # Clean up in case of an error
-        clean_up(npc_list, pedestrians, pcla)
+        clean_up(current_dir, npc_list, pedestrians, pcla)
 
-        # Recreate an empty results file for future
-        with open(os.path.join(current_dir, 'results/language_result.txt'), 'w') as f:
-            f.write('pedestrians: 0\n')
-            f.write('stop signs: 0\n')
+        # recreate the empty results files for next scenario
+        recreate_files(current_dir)
         
 
 if __name__ == '__main__':

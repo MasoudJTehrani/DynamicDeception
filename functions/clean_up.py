@@ -1,6 +1,8 @@
 import time
 import os
-def clean_up(npc_list, pedestrians, pcla):
+from .save_run import save_run
+
+def clean_up(current_dir, npc_list, pedestrians, pcla):
     """Cleans up the spawned NPCs, pedestrian, vehicle, and PCLA instance.
 
     Args:
@@ -12,6 +14,7 @@ def clean_up(npc_list, pedestrians, pcla):
         pcla (PCLA): The PCLA instance.
 
     """
+    save_run(current_dir)
 
     print('...Cleaning up the actors and PCLA instance...')
     if npc_list:

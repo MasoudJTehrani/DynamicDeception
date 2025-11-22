@@ -14,6 +14,11 @@
             "sp_npcs": true,
             "sp_peds": true,
             "pedestrian_names": ["walker.pedestrian.0060"]
+        },
+        "no_pedestrian": {
+            "sp_npcs": true,
+            "sp_peds": false,
+            "pedestrian_names": [""]
         }
     }
 }
