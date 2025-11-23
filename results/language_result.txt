@@ -1,2 +1,2 @@
 pedestrians: 2
-stop signs: 2
+stop signs: 3
