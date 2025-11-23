@@ -1,2 +1,2 @@
-pedestrians: 2
-stop signs: 3
+pedestrians: 0
+stop signs: 0
