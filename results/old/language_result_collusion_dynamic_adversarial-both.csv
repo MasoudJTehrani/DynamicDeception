@@ -1,0 +1,3 @@
+val:,num,num.1,num.2,num.3,num.4,num.5,num.6,num.7,num.8,num.9,mean+-std
+pedestrians:,5,2,0,0,0,0,5,2,2,0,1.60+-2.01
+stop signs:,41,58,177,169,11,13,54,31,60,10,62.40+-61.34

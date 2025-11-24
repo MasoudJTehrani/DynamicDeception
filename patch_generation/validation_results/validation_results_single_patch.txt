@@ -1,6 +1,6 @@
 Validation Results (Using Patch):
 Validation Results (Single Patch Mode):
 Total Attacks: 304
-Successful Attacks: 21
-Success Rate: 6.91%
-Average Stop Sign Score (Patched): 0.6318
+Successful Attacks: 99
+Success Rate: 32.57%
+Average Stop Sign Score (Patched): 0.7086
