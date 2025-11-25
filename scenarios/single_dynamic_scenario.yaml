@@ -2,11 +2,11 @@
 
 # Pedestrian spawn Location
 
-ped_x: 14.3
-ped_y: 55
+ped_x: 11.3
+ped_y: 54.7
 ped_z: 1
 target_ped_x: 5.6 # Where to stop moving the pedestrians
-target_ped_y: 54.6
+target_ped_y: 54.7
 target_ped_z: 1
 ped_pitch: 0
 ped_yaw: 180
