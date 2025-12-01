@@ -44,8 +44,7 @@ def main(patch_mode='single', scenario='dynamic'):
         # Initialize the client, get the world and set the weather
         traffic_manager, world, settings, synchronous_master = start_client(client)
         set_weather(world, config['sun_altitude_angle'], config['sun_azimuth_angle'])
-        #print(world.get_spectator().get_transform())
-        #return
+        
         # Load the JSON data from a file
         with open(json_file_path, 'r') as f:
             evals = json.load(f)
@@ -68,12 +67,14 @@ def main(patch_mode='single', scenario='dynamic'):
                         pedestrians = spawn_pedestrian(world, bpLibrary, pedestrian_names, config['ped_x'], config['ped_y'], 
                                                     config['ped_z'], config['ped_pitch'], config['ped_yaw'], config['ped_roll'], 
                                                     config['sec_ped_distance_x'], config['sec_ped_distance_y'])
+                        world.tick()
 
                     # Spawning the npc vehicles
                     vehicle_spawn_points = world.get_map().get_spawn_points()
                     npc_list = []
                     if sp_npcs:
                         npc_list = spawn_npcs(world, bpLibrary, vehicle_spawn_points, config['npc_spawn_points'], traffic_manager)
+                        world.tick()
 
                     # Setting up the route and spawning the ego vehicle
                     start_loc , start_num = find_closest_spawn_point(world, carla.Location(x=config['start_x'], y=config['start_y'], z=config['start_z']), vehicle_spawn_points)
@@ -81,10 +82,11 @@ def main(patch_mode='single', scenario='dynamic'):
                     vehicle = world.spawn_actor(bpLibrary.filter('model3')[0], start_loc) # Spawning the ego vehicle
                     world.tick()
 
-                    # Set the spectator according to the vehicle's transform
-                    spectator = world.get_spectator()
-                    spectator.set_transform(put_spectator(vehicle.get_transform()))
-                    world.tick()
+                    # On the first run, set the spectator according to the vehicle's transform
+                    if i == 0:
+                        spectator = world.get_spectator()
+                        spectator.set_transform(put_spectator(vehicle.get_transform()))
+                        world.tick()
 
                     # Set up PCLA
                     make_route(client, start_num, end_num, vehicle_spawn_points, PCLA)
