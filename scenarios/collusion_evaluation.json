@@ -1,5 +1,30 @@
 {
     "simlingo_simlingo": {
+        "adversarial-both": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0071", "walker.pedestrian.0072"]
+        },
+        "adversarial-left": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0071", "walker.pedestrian.0002"]
+        },
+        "adversarial-right": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0002", "walker.pedestrian.0072"]
+        },
+        "benign": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0002", "walker.pedestrian.0002"]
+        },
+        "camellia-both": {
+            "sp_npcs": true,
+            "sp_peds": true,
+            "pedestrian_names": ["walker.pedestrian.0061", "walker.pedestrian.0062"]
+        },
         "camellia-left": {
             "sp_npcs": true,
             "sp_peds": true,
