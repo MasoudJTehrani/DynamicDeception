@@ -18,6 +18,10 @@ cd adversarial-robustness-toolbox
 pip install .
 ```
 
+## Dataset
+
+The dataset will be automatically downloaded. You can also download it from [HuggingFace](https://huggingface.co/datasets/MasoudJTehrani/DynamicDeception) and extract it in this directory to create `patch_generation/datasets`.
+
 ## Patch Generation
 
 To reproduce our results, you can keep the default configuration in `patch_config.yaml`.
