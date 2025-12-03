@@ -11,9 +11,9 @@ target_ped_z: 1
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
-sec_ped_distance_y: -0.6
+sec_ped_distance_y: -0.6 # Distance of the second pedestrian from the first pedestrian
 sec_ped_distance_x: -0.2
 move_ped_x: -1 # This will make the pedestrian to only move it in the direction of x
-move_ped_y: -0.05
+move_ped_y: -0.05 # we have this since Town07 is a bit tilted
 move_ped_z: 0
 ped_distance: 9 # The distance of the pedestrian from the vehicle to start moving

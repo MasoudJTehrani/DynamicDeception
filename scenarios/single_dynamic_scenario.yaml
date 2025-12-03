@@ -14,6 +14,6 @@ ped_roll: 0
 sec_ped_distance_y: 0
 sec_ped_distance_x: 0
 move_ped_x: -1 # This will make the pedestrian move in the direction of x
-move_ped_y: -0.05
+move_ped_y: -0.05 # we have this since Town07 is a bit tilted
 move_ped_z: 0
 ped_distance: 10 # The distance of the pedestrian from the vehicle to start moving

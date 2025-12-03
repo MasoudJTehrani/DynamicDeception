@@ -8,5 +8,5 @@ ped_z: 1
 ped_pitch: 0
 ped_yaw: 180
 ped_roll: 0
-sec_ped_distance_y: -0.6
+sec_ped_distance_y: -0.6 # Distance of the second pedestrian from the first pedestrian
 sec_ped_distance_x: -0.2
