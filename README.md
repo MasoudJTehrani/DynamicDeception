@@ -4,6 +4,14 @@
 Replication package for the paper: **_Dynamic Deception: When Pedestrians Team Up to Fool Autonomous Cars_**
 
 ---
+## Contents
+
+1. [Setup](#-setup)
+2. [Pedestrians’ Shirts](#pedestrians-shirts)
+3. [Running the Code](#running-the-code)
+4. [Configurations](#configurations)
+5. [Results](#results)
+
 
 ## 🚀 Setup
 
