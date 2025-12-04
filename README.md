@@ -7,10 +7,10 @@ Replication package for the paper: **_Dynamic Deception: When Pedestrians Team U
 ## Contents
 
 1. [Setup](#-setup)
-2. [Pedestrians’ Shirts](#pedestrians-shirts)
-3. [Running the Code](#running-the-code)
-4. [Configurations](#configurations)
-5. [Results](#results)
+2. [Pedestrians’ Shirts](#-pedestrians-shirts)
+3. [Running the Code](#-running-the-code)
+4. [Configurations](#-configurations)
+5. [Results](#-results)
 
 
 ## 🚀 Setup
