@@ -8,8 +8,8 @@ Replication package for the paper: **_Dynamic Deception: When Pedestrians Team U
 
 1. [Setup](#-setup)
 2. [Pedestrians’ Shirts](#-pedestrians-shirts)
-3. [Running the Code](#-running-the-code)
-4. [Configurations](#-configurations)
+3. [Running the Code](#%EF%B8%8F-running-the-code)
+4. [Configurations](#%EF%B8%8F-configurations)
 5. [Results](#-results)
 
 
