@@ -53,8 +53,8 @@ Replication package for the paper: <br>
     To replicate our experimental setup, open Town07 in the CARLA UE editor and hide or remove the stop sign at the target intersection used in the paper.
 
 ## 👕 Pedestrians’ Shirts
-  The pedestrian shirt textures used in our experiments are inside the `images/` folder.
-  You may reuse them to replicate the study.
+  The pedestrian shirt textures used in our experiments are inside the `images/` folder. You may reuse them to replicate the study. <br>
+  If you want to generate your own patches, please refer to [patch_generation](https://github.com/MasoudJTehrani/DynamicDeception/tree/main/patch_generation) folder.
   
   A YouTube tutorial is available showing:
   
