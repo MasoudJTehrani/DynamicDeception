@@ -1,10 +1,14 @@
 
-# DynamicDeception
+<h1 align="center">DynamicDeception</h1>
 
-Replication package for the paper: **_Dynamic Deception: When Pedestrians Team Up to Fool Autonomous Cars_**
+<p align="center">
+Replication package for the paper: <br>
+<strong><em>Dynamic Deception: When Pedestrians Team Up to Fool Autonomous Cars</em></strong>
+</p>
 
 ---
-## Contents
+
+## 📑 Contents
 
 1. [Setup](#-setup)
 2. [Pedestrians’ Shirts](#-pedestrians-shirts)
