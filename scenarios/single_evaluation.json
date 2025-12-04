@@ -1,10 +1,5 @@
 {
     "simlingo_simlingo": {
-        "adversarial1": {
-            "sp_npcs": true,
-            "sp_peds": true,
-            "pedestrian_names": ["walker.pedestrian.0070"]
-        },
         "benign": {
             "sp_npcs": true,
             "sp_peds": true,
