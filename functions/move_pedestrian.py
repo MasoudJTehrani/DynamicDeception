@@ -2,9 +2,17 @@ import carla
 import math
 def move_pedestrian(pedestrians, vehicle, calc_distance, ped_distance, move_ped_x, move_ped_y, move_ped_z, target_ped_x, target_ped_y, target_ped_z, vehicle_velocity):
     """
-    ADD COMMENTS LATER
+    Moves pedestrians towards a target location when within a certain distance of the vehicle.
+    Parameters:
+    - pedestrians: list of pedestrian actors to move
+    - vehicle: the ego vehicle actor
+    - calc_distance: function to calculate distance between two locations
+    - ped_distance: distance threshold to start moving pedestrians
+    - move_ped_x, move_ped_y, move_ped_z: direction vector
+    - target_ped_x, target_ped_y, target_ped_z: target location for pedestrians
+    - vehicle_velocity: current velocity of the vehicle
     """
-    # moves pedestrian based on the distance to the ego vehicle
+    # Calculate distance between vehicle and the first pedestrian
     ped_loc = pedestrians[0].get_location()
     distance = calc_distance(vehicle.get_location(), ped_loc)
     distance_to_target = calc_distance(ped_loc, carla.Location(x=target_ped_x, y=target_ped_y, z=target_ped_z))
