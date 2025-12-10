@@ -20,7 +20,7 @@ pip install .
 
 ## Dataset
 
-The dataset will be automatically downloaded. You can also download it from [HuggingFace](https://huggingface.co/datasets/MasoudJTehrani/DynamicDeception) and extract it in this directory to create `patch_generation/datasets`.
+The dataset will be automatically downloaded. You can also download it from [Zenodo](https://zenodo.org/records/17880415) and extract it in this directory to create `patch_generation/datasets`.
 
 ## Patch Generation
 
