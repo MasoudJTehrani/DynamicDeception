@@ -3,7 +3,6 @@
 This repository provides code to generate adversarial patches targeting YOLOv5.  
 The generated patch can be **disguised inside any image of your choice** and optimized to fool the model into predicting a desired target class.
 
-The algorithm is designed by https://github.com/xHascox
 
 ---
 
