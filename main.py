@@ -10,9 +10,9 @@ sys.path.append(os.path.dirname(os.path.abspath("/home/vortex/PCLA")))
 
 from PCLA import PCLA
 
-def main(patch_mode='single', scenario='dynamic'):
+def main(patch_mode='single', scenario='dynamic', save_velocities=False):
 
-    print(f"Patch mode: {patch_mode}\nScenario mode: {scenario}")
+    print(f"Patch mode: {patch_mode}\nScenario mode: {scenario}\nSave velocities: {save_velocities}")
 
     # Path to the configuration files
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -101,6 +101,7 @@ def main(patch_mode='single', scenario='dynamic'):
 
                     # Run the vehicle until it reaches the destination, time runs out, or user presses Enter
                     begin_time = time.time()
+                    velocity = []
                     while is_far_from(vehicle.get_location(), end_loc) \
                         and ((time.time() - begin_time) < config['time_allowed']) \
                         and (not stop_event.is_set()):
@@ -111,6 +112,8 @@ def main(patch_mode='single', scenario='dynamic'):
                                             config['target_ped_z'], vehicle.get_velocity())
                         ego_action = pcla.get_action()
                         vehicle.apply_control(ego_action)
+                        if save_velocities:
+                            velocity.append(vehicle.get_velocity())
                         world.tick()
 
                     if stop_event.is_set():
@@ -120,7 +123,10 @@ def main(patch_mode='single', scenario='dynamic'):
                         stop_event.set()
                         if enter_thread is not None and enter_thread.is_alive():
                             enter_thread.join(timeout=1.0)
-
+                    
+                    # Save the velocity data to a CSV file
+                    if save_velocities:
+                        save_velocity_data(current_dir, patch_mode, scenario, scenario_name, i, velocity)
                     # Clean up the actors and PCLA instance
                     clean_up(current_dir, npc_list, pedestrians, pcla)
                     # recreate the empty results txt for next scenario
@@ -153,19 +159,22 @@ def main(patch_mode='single', scenario='dynamic'):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Run DynamicDeception scenarios.')
-    parser.add_argument('-patch', '--patch',
+    parser.add_argument('-p', '--patch',
                         choices=['single', 'collusion'],
                         default='single',
                         help='The patch mode which says which type of patch should be used for evaluation (default: single)')
-    parser.add_argument('-scenario', '--scenario',
+    parser.add_argument('-s', '--scenario',
                         choices=['dynamic', 'static'],
                         default='dynamic',
                         help='The scenario mode which can be dynamic or static to show whether to move the pedestrian or not (default: dynamic)')
+    parser.add_argument('-sv', '--save-velocities',
+                        action='store_true',
+                        help='Flag to save vehicle velocity data to plot files (default: disabled)')
 
     args = parser.parse_args()
 
     try:
-        main(patch_mode=args.patch, scenario=args.scenario)
+        main(patch_mode=args.patch, scenario=args.scenario, save_velocities=args.save_velocities)
     except KeyboardInterrupt:
         pass
     finally:
