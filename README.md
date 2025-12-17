@@ -66,23 +66,23 @@ Replication package for the paper: <br>
 ***While the PCLA environment is active***, run an evaluation with:
 
 ```Shell
-python main.py -patch <option> -scenario <option>
+python main.py --patch <option> --scenario <option>
 ``` 
 
-**`-patch | -p` options:**
+**`--patch | -p` options:**
 
 -   `single` – evaluate the single pedestrian attack
     
 -   `collusion` – evaluate the collusion attack
     
 
-**`-scenario | -s` options:**
+**`--scenario | -s` options:**
 
 -   `static` – pedestrian remains still
     
 -   `dynamic` – pedestrian moves with the vehicle
 
-**`-save_scenarios | -sv` options:**
+**`--save-velocities | -sv` options:**
 
 -   Use this flag to flag that you want to save the speed data
 -   The data will be saved as csv and plot under `results/velocity_data/` folder
