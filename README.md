@@ -69,18 +69,24 @@ Replication package for the paper: <br>
 python main.py -patch <option> -scenario <option>
 ``` 
 
-**`-patch` options:**
+**`-patch | -p` options:**
 
 -   `single` – evaluate the single pedestrian attack
     
 -   `collusion` – evaluate the collusion attack
     
 
-**`-scenario` options:**
+**`-scenario | -s` options:**
 
 -   `static` – pedestrian remains still
     
 -   `dynamic` – pedestrian moves with the vehicle
+
+**`-save_scenarios | -sv` options:**
+
+-   Use this flag to flag that you want to save the speed data
+-   The data will be saved as csv and plot under `results/velocity_data/` folder
+
 
 ## ⚙️ Configurations
 
