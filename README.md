@@ -133,11 +133,19 @@ All outputs are stored under the `results/` directory.
 You will find **CSV files** containing model-level statistics (per-run and aggregated mean ± std).
 The system-level evaluation were done by analysing recorded videos (used to manually count full stops).
 
+## 📊 Extras
+
+Additional analysis and benchmarking can be found in the `extras/` directory:
+
+-	`Fisher_Test.ipynb`: Contains the implementation and statistical results for our Fisher's test analysis.
+
+-	`Speed_plot.ipynb`: Includes the speed comparison between dynamic and static scenarios in the collusion attack
+
 ## 📂 Project Structure (Overview)
 
 ```Bash
 ├─ images/ # Shirt textures for pedestrians 
-├─ extras/ # Custom agent (agent_simlingo.py) 
+├─ extras/ # Custom agent (agent_simlingo.py) and analysis notebooks
 ├─ scenarios/ # YAML configuration files 
 ├─ results/ # CSV logs 
 ├─ main.py # Python evaluation file 
