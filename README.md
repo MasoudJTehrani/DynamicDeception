@@ -7,7 +7,7 @@ Replication package for the paper: <br>
 
 ---
 
-## 📑 Contents
+## Contents
 
 1. [Setup](#-setup)
 2. [Pedestrians’ Shirts](#-pedestrians-shirts)
@@ -16,7 +16,7 @@ Replication package for the paper: <br>
 5. [Results](#-results)
 
 
-## 🚀 Setup
+## Setup
 
 1. **Build CARLA from source**  
    To customize the environment (stop signs and pedestrians), you must build CARLA from source.  
@@ -51,7 +51,7 @@ Replication package for the paper: <br>
 
     To replicate our experimental setup, open Town07 in the CARLA UE editor and hide or remove the stop sign at the target intersection used in the paper.
 
-## 👕 Pedestrians’ Shirts
+## Pedestrians’ Shirts
   The pedestrian shirt textures used in our experiments are inside the `images/` folder. You may reuse them to replicate the study. <br>
   If you want to generate your own patches, please refer to [patch_generation](https://github.com/MasoudJTehrani/DynamicDeception/tree/main/patch_generation) folder.
   
@@ -61,7 +61,7 @@ Replication package for the paper: <br>
   - how to create new pedestrian models,
   - and how to spawn customized pedestrians in CARLA.
 
-## ▶️ Running the Code
+## Running the Code
 
 ***While the PCLA environment is active***, run an evaluation with:
 
@@ -88,7 +88,7 @@ python main.py --patch <option> --scenario <option>
 -   The data will be saved as csv and plot under `results/velocity_data/` folder
 
 
-## ⚙️ Configurations
+## Configurations
 
 All configuration files are located in the `scenarios/` directory.  
 Each file includes explanatory comments.
@@ -126,14 +126,14 @@ This file defines:
 -   whether to spawn npc and pedestrians or not
 -   IDs of the pedestrians being evaluated (must match our scenarios for replication)
 
-## 📊 Results
+## Results
 
 All outputs are stored under the `results/` directory.
 
 You will find **CSV files** containing model-level statistics (per-run and aggregated mean ± std).
 The system-level evaluation were done by analysing recorded videos (used to manually count full stops).
 
-## 📊 Extras
+## Extras
 
 Additional analysis and benchmarking can be found in the `extras/` directory:
 
@@ -141,7 +141,7 @@ Additional analysis and benchmarking can be found in the `extras/` directory:
 
 -	`Speed_plot.ipynb`: Includes the speed comparison between dynamic and static scenarios in the collusion attack
 
-## 📂 Project Structure (Overview)
+## Project Structure (Overview)
 
 ```Bash
 ├─ images/ # Shirt textures for pedestrians 
