@@ -156,5 +156,10 @@ Additional analysis and benchmarking can be found in the `extras/` directory:
 If you find PCLA useful, please consider giving it a star 🌟, and cite the published paper
 
 ```bibtex
-Title{Dynamic Deception}
+@article{tehrani2026dynamic,
+  title={Dynamic Deception: When Pedestrians Team Up to Fool Autonomous Cars},
+  author={Tehrani, Masoud Jamshidiyan and Gabriel, Marco and Kim, Jinhan and Tonella, Paolo},
+  journal={arXiv preprint arXiv:2602.18079},
+  year={2026}
+}
 ```
