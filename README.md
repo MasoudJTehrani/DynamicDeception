@@ -153,7 +153,7 @@ Additional analysis and benchmarking can be found in the `extras/` directory:
 ```
 
 ## Citation
-If you find PCLA useful, please consider giving it a star 🌟, and cite the published paper
+If you find this paper useful, please consider giving it a star 🌟, and cite the published paper
 
 ```bibtex
 
